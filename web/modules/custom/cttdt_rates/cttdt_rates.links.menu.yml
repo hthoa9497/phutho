@@ -1,0 +1,10 @@
+entity.cttdt_rates.settings:
+  title: CTTDT Rates
+  description: Configure a CTTDT Rates entity type
+  route_name:  entity.cttdt_rates.settings
+  parent: system.admin_structure
+entity.cttdt_rates.collection:
+  title: CTTDT Rateses
+  description: List of cttdt rateses
+  route_name: entity.cttdt_rates.collection
+  parent: system.admin_content

@@ -1,0 +1,4 @@
+services:
+  cttdt_hoi_dap.hoidap:
+    class: Drupal\cttdt_hoi_dap\HoiDapService
+    arguments: ['@entity_type.manager', '@current_user']

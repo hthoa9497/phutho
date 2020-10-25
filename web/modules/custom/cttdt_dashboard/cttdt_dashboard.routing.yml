@@ -1,0 +1,68 @@
+cttdt_dashboard.cttdt_config_form:
+  path: '/cttdt_dashboard/form/config'
+  defaults:
+    _form: '\Drupal\cttdt_dashboard\Form\CttdtConfigForm'
+    _title: 'CTTDT Config Form'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+cttdt_dashboard.tin-cho-bt-moi:
+  path: '/cho-bt-moi'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::choBT1New
+  requirements:
+    _role: 'lanh_dao_phong_cong_ttdt'
+
+cttdt_dashboard.tin-cho-bt-do:
+  path: '/cho-bt-do'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::choBT1Do
+  requirements:
+    _role: 'lanh_dao_phong_cong_ttdt'
+
+cttdt_dashboard.tin-cho-bt2-moi:
+  path: '/cho-bt2-moi'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::choBT2New
+  requirements:
+    _role: 'pgd_tt_phu_trach_cong_ttdt'
+
+cttdt_dashboard.tin-cho-bt2-do:
+  path: '/cho-bt2-do'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::choBT2Do
+  requirements:
+    _role: 'pgd_tt_phu_trach_cong_ttdt'
+
+cttdt_dashboard.tk-tp:
+  path: '/tk-tp'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::tkTacPham
+  requirements:
+    _role: 'truong_bbt'
+
+cttdt_dashboard.tk-nb:
+  path: '/tk-nb'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::tkNhuanBut
+  requirements:
+    _role: 'truong_bbt'
+
+cttdt_dashboard.tk-nb-common:
+  path: '/tk-nb-common'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::tkNhuanButCommon
+  requirements:
+    _role: 'truong_bbt'
+
+cttdt_dashboard.admin_statistics_view_count:
+  path: '/admin/reports/statistic-node-view-count'
+  defaults:
+    _controller: Drupal\cttdt_dashboard\Controller\DashboardController::statisticNodeViewCount
+    _title: 'Thống kê lượt truy cập'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

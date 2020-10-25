@@ -1,0 +1,5 @@
+administer author management:
+  title: 'Administer author management settings'
+  restrict access: true
+access author management overview:
+  title: 'Access author management overview page'

@@ -1,0 +1,4 @@
+services:
+  hoidap_client.hoidap:
+    class: Drupal\hoidap_client\HoiDapClientService
+    arguments: ['@current_user']

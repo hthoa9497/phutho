@@ -1,0 +1,37 @@
+<div class="tk-bao-cao-dv mt-3">
+  <div class="row">
+    <div class="col-12 tk-form-filter">
+      {{ form }}
+    </div>
+    <div class="col-12 rate-content">
+      <table class="table table-bordered table-tk">
+        <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">{{ 'Câu hỏi đã trả lời'|t }}</th>
+          <th scope="col">{{ 'Đơn vị trả lời'|t }}</th>
+          <th scope="col">{{ 'Thời gian phân công'|t }}</th>
+          <th scope="col">{{ 'Thời gian xuất bản'|t }}</th>
+          <th scope="col">{{ 'Số ngày chậm'|t }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if data is not empty %}
+          {% for item in data %}
+            <tr class="post-item">
+              <th scope="row" class="text-align-center">{{ loop.index }}</th>
+              <td>{{ item['cau_hoi'] }}</td>
+              <td class="text-align-center">{{ item['don_vi'] }}</td>
+              <td class="text-align-center">{{ item['time_tra_loi'] }}</td>
+              <td class="text-align-center">{{ item['time_published'] }}</td>
+              <td class="text-align-center">{{ item['total_delay'] }}</td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

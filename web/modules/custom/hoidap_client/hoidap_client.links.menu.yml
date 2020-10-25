@@ -1,0 +1,6 @@
+hoidap_client.hoidap_config_form:
+  title: 'Hoi Dap Config Form'
+  route_name: hoidap_client.hoidap_config_form
+  description: 'A description for the menu entry'
+  parent: system.admin_config_system
+  weight: 99

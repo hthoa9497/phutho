@@ -1,0 +1,4 @@
+services:
+  cttdt_dashboard.dashboard:
+    class: Drupal\cttdt_dashboard\DashboardService
+    arguments: ['@database', '@current_user', '@entity_type.manager']

@@ -1,0 +1,5 @@
+question_survey.add_form:
+  route_name: entity.question_survey.add_form
+  title: 'Add question survey'
+  appears_on:
+    - entity.question_survey.collection

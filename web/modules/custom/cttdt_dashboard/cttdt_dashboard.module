@@ -1,0 +1,235 @@
+<?php
+
+/**
+ * @file
+ * Contains cttdt_dashboard.module.
+ */
+
+use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Database\Database;
+
+
+
+function cttdt_dashboard_theme($existing, $type, $theme, $path) {
+  return [
+    'cttdt_dashboard_chobtnew' => [
+      'variables' => array('data' => TRUE),
+      'template' => 'cho-bt1-new',
+    ],
+    'cttdt_dashboard_chobtdo' => [
+      'variables' => array('data' => TRUE),
+      'template' => 'cho-bt1-do',
+    ],
+    'cttdt_dashboard_chobt2new' => [
+      'variables' => array('data' => TRUE),
+      'template' => 'cho-bt2-new',
+    ],
+    'cttdt_dashboard_chobt2do' => [
+      'variables' => array('data' => TRUE),
+      'template' => 'cho-bt2-do',
+    ],
+    'tk_tac_pham' => [
+      'variables' => array( 'form' => NULL, 'data' => NULL),
+      'render element' => 'form'
+    ],
+    'tk_nhuan_but' => [
+      'variables' => array( 'form' => NULL, 'data' => NULL),
+      'render element' => 'form'
+    ],
+    'tk_nhuan_but_common' => [
+      'variables' => array( 'form' => NULL, 'data' => NULL),
+      'render element' => 'form'
+    ],
+    'anh_video_library' => [
+      'variables' => array(
+        'title' => NULL,
+        'description' => null
+      ),
+    ]
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function cttdt_dashboard_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $current_user = \Drupal::currentUser();
+  $roles = $current_user->getRoles();
+  if ($form_id == 'node_article_edit_form') {
+    if ($form_state->getFormObject() instanceof EntityForm) {
+      $node = $form_state->getFormObject()->getEntity();
+      $owner_id = $node->getOwnerId();
+
+      $form['#validate'][] = '_cttdt_form_article_validate';
+      if (in_array('btv', $roles) || in_array('qtv', $roles) || in_array('ctv', $roles)
+        || in_array('lanh_dao_phong_cong_ttdt', $roles) || $owner_id == $current_user->id()) {
+        unset($form['field_he_so_nhuan_but']);
+        unset($form['moderation_state']['widget'][0]['buttons']['draft']);
+      }
+
+      $is_crawler = $node->field_tin_crawl->value;
+      if ($is_crawler == 1) {
+        unset($form['moderation_state']);
+        unset($form['field_tac_gia']);
+        unset($form['field_but_danh']);
+        unset($form['field_the_loai']);
+        unset($form['field_hien_thi_slide']);
+        unset($form['field_he_so_nhuan_but']);
+
+        // Add publish button
+        $form['actions']['publish_crawler'] = array(
+          '#type' => 'submit',
+          '#weight' => 999,
+          '#value' => t('Xuất bản')
+        );
+        $form['actions']['publish_crawler']['#submit'][] = 'cttdt_dashboard_publish_crawler';
+      }
+
+    }
+  }
+
+  if ($form_id == 'node_article_form') {
+    unset($form['field_he_so_nhuan_but']);
+    unset($form['moderation_state']['widget'][0]['buttons']['draft']);
+  }
+
+  if ($form_id == 'webform_submission_y_kien_dong_gop_du_thao_van_ban_add_form') {
+    $vb_id = \Drupal::request()->query->get('vb_id');
+
+    if (!empty($vb_id)) {
+      $vb = Node::load($vb_id);
+      $vb_title = $vb->getTitle();
+      $form['elements']['tieu_de']['#default_value'] = t('Góp ý dự thảo: ') . $vb_title;
+    }
+  }
+}
+
+/**
+ * Check validate for nhuan but
+ */
+function _cttdt_form_article_validate(&$form, FormStateInterface $form_state) {
+  $the_loai = $form_state->getValue('field_the_loai');
+  if (!empty($the_loai)) {
+    $the_loai_term = Term::load($the_loai[0]['target_id']);
+    if (!empty($the_loai_term)) {
+      $hs_nhuan_but = $the_loai_term->get('field_he_so_nhuan_but')->value;
+    }
+  }
+
+  if (!empty($form_state->getValue('field_he_so_nhuan_but'))) {
+    $nhuan_but = $form_state->getValue('field_he_so_nhuan_but')[0]['value'];
+  }
+
+  if (!empty($hs_nhuan_but) && !empty($nhuan_but)) {
+    if ($nhuan_but > $hs_nhuan_but) {
+      $form_state->setErrorByName('field_he_so_nhuan_but', t('Hệ số nhuận bút phải nhỏ hơn hoặc bằng ' . $hs_nhuan_but));
+    }
+  }
+}
+
+function cttdt_dashboard_publish_crawler(&$form, FormStateInterface $form_state) {
+  $danh_muc = $form_state->getValue('field_danh_muc');
+
+  if ($form_state->getFormObject() instanceof EntityForm) {
+    $node = $form_state->getFormObject()->getEntity();
+    $node->set('field_danh_muc',  ['target_id' => $danh_muc[0]['target_id']]);
+    $node->set('moderation_state', "published");
+    $node->save();
+    $messenger = \Drupal::messenger();
+    $messenger->addMessage(t('Xuất bản tin crawler thành công'), 'status', TRUE);
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function cttdt_dashboard_page_attachments(array &$attachments) {
+  $theme = \Drupal::theme()->getActiveTheme()->getName();
+  if ($theme == 'adminimal_theme') {
+    $attachments['#attached']['library'][] = 'cttdt_dashboard/extra.admin';
+  }
+}
+
+function cttdt_dashboard_cron() {
+  cttdt_dashboard_cron_crawler();
+//  cttdt_dashboard_cron_mot_cua();
+}
+
+function cttdt_dashboard_cron_crawler() {
+  $data_crawler = \Drupal::service('cttdt_dashboard.dashboard')->getPostCrawler();
+
+  if (!empty($data_crawler)) {
+    foreach ($data_crawler as $item) {
+      $remoteDocPath = $item['image_url'];
+      $doc = system_retrieve_file($remoteDocPath, 'public://crawler-images/', FALSE, FILE_EXISTS_REPLACE);
+      if (!empty($doc)) {
+        $image_dai_dien = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($doc);
+      }
+      else {
+        $image_dai_dien = NULL;
+      }
+
+      if (!empty($item['summary'])) {
+        $body = [
+          'summary' => html_entity_decode($item['summary']),
+          'value' => '',
+          'format' => 'full_html',
+        ];
+      }
+
+      $node = Node::create(['type' => 'article']);
+      $node->set('title', $item['title']);
+      $node->set('body', $body);
+      if (!empty($image_dai_dien)) {
+        $node->set('field_image', array(
+          'target_id' => $image_dai_dien->id(),
+          'alt' => 'image_crawler_'.$image_dai_dien->id()
+        ));
+      }
+      if (!empty($item['url'])) {
+        $node->set('field_link_lien_ket', [
+          'uri' => $item['url'],
+          'title' => ''
+        ]);
+      }
+      $node->set('field_tin_crawl', 1);
+      $node->set('created', strtotime($item['date']));
+      $node->setPublished(TRUE);
+      $node->set('moderation_state', "draft");
+      $node->enforceIsNew();
+
+      if ($node->save()) {
+        \Drupal::service('cttdt_dashboard.dashboard')->updateStatusPostCrawler($item['id']);
+      }
+      else {
+        \Drupal::logger('cttdt_dashboard')->error('Save post crawler error at' . $item['id']);
+      }
+    }
+  }
+}
+
+function cttdt_dashboard_cron_mot_cua() {
+  $html = \Drupal::service('cttdt_dashboard.dashboard')->fetch_http_file_contents('http://dichvucong.phutho.gov.vn/dichvucong/home/linkto_tinhhinhxulyhoso');
+  $doc = new DOMDocument();
+  $doc->loadHTML($html);
+  $data = [];
+  $data['hs_dung_han'] = $doc->getElementById("chart-percent")->getAttribute('data-percent');
+  $xpath = new DomXPath($doc);
+  $nodeList = $xpath->query("//div[@class='value']");
+  $data['hs_tiep_nhan'] = $nodeList[0]->textContent;
+  $data['hs_da_giai_quyet'] = $nodeList[1]->textContent;
+  $data['hs_year'] = date('Y');
+
+  if (!empty($data)) {
+    $block_content = \Drupal::entityManager()->getStorage('block_content')->load(23);
+    $block_content->field_so_lieu_trong_han = $data['hs_dung_han'];
+    $block_content->field_so_lieu_da_tiep_nhan = $data['hs_tiep_nhan'];
+    $block_content->field_so_lieu_da_giai_quyet = $data['hs_da_giai_quyet'];
+    $block_content->field_mot_cua_year = $data['hs_year'];
+    $block_content->save();
+  }
+}

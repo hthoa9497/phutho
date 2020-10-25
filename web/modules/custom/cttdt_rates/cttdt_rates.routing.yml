@@ -1,0 +1,35 @@
+entity.cttdt_rates.settings:
+  path: 'admin/structure/cttdt-rates'
+  defaults:
+    _form: '\Drupal\cttdt_rates\Form\CttdtRatesSettingsForm'
+    _title: 'CTTDT Rates'
+  requirements:
+    _permission: 'administer cttdt rates'
+
+cttdt_rates.rate_co_quan:
+   path: '/danh-gia-chat-luong-phuc-vu-co-quan-chuyen-mon'
+   defaults:
+     _controller: Drupal\cttdt_rates\Controller\CttdtRatesController::rateCoQuan
+   requirements:
+     _permission: 'access content'
+
+cttdt_rates.save_rate:
+   path: '/cttdt-rates/save-rate'
+   defaults:
+     _controller: Drupal\cttdt_rates\Controller\CttdtRatesController::saveRate
+   requirements:
+     _permission: 'access content'
+
+cttdt_rates.rate_result:
+   path: '/cttdt-rates/rate-result'
+   defaults:
+     _controller: Drupal\cttdt_rates\Controller\CttdtRatesController::rateResult
+   requirements:
+     _permission: 'access content'
+
+cttdt_rates.tk_rate_chat_luong:
+   path: '/thong-ke/rate-chat-luong-phuc-vu'
+   defaults:
+     _controller: Drupal\cttdt_rates\Controller\CttdtRatesController::tkRateChatLuongPhucVu
+   requirements:
+     _role: 'truong_bbt'

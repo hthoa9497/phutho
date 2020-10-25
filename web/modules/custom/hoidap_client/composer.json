@@ -1,0 +1,13 @@
+{
+    "name": "hoidap_client",
+    "type": "drupal-module",
+    "description": "My Awesome Module",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/hoidap_client",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/hoidap_client",
+        "source": "http://cgit.drupalcode.org/hoidap_client",
+    },
+}

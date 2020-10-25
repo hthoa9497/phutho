@@ -1,0 +1,13 @@
+{
+    "name": "cttdt_hoi_dap",
+    "type": "drupal-module",
+    "description": "Custom module for Hoi Dap",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/cttdt_hoi_dap",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/cttdt_hoi_dap",
+        "source": "http://cgit.drupalcode.org/cttdt_hoi_dap",
+    },
+}

@@ -1,0 +1,5 @@
+name: 'CTTDT Phu Tho Dashboard'
+type: module
+description: 'CTTDT Phu Tho Dashboard custom module'
+core: 8.x
+package: 'custom'

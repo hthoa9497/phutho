@@ -1,0 +1,27 @@
+training_import.config:
+  path: '/admin/train/config'
+  defaults:
+    _form: '\Drupal\training_import\Form\TrainingConfigForm'
+    _title: 'Training Configuration Form'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+training_import.import:
+  path: '/admin/train/import'
+  defaults:
+    _form: '\Drupal\training_import\Form\ImportForm'
+    _title: 'Training Import Form'
+  requirements:
+    _permission: 'importer import data'
+  options:
+    _admin_route: TRUE
+
+training_import.customer_list:
+  path: '/customers'
+  defaults:
+    _controller: '\Drupal\training_import\Controller\CustomerController::overview'
+    _title: 'Customers'
+  requirements:
+    _permission: 'access content'

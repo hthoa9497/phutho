@@ -1,0 +1,22 @@
+entity.cttdt_rates.settings:
+  title: Settings
+  route_name: entity.cttdt_rates.settings
+  base_route: entity.cttdt_rates.settings
+entity.cttdt_rates.view:
+  title: View
+  route_name: entity.cttdt_rates.canonical
+  base_route: entity.cttdt_rates.canonical
+entity.cttdt_rates.edit_form:
+  title: Edit
+  route_name: entity.cttdt_rates.edit_form
+  base_route: entity.cttdt_rates.canonical
+entity.cttdt_rates.delete_form:
+  title: Delete
+  route_name: entity.cttdt_rates.delete_form
+  base_route: entity.cttdt_rates.canonical
+  weight: 10
+entity.cttdt_rates.collection:
+  title: CTTDT Rates
+  route_name: entity.cttdt_rates.collection
+  base_route: system.admin_content
+  weight: 10

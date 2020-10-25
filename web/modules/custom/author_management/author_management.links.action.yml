@@ -1,0 +1,5 @@
+author_management.add_form:
+  route_name: entity.author_management.add_form
+  title: 'Add author management'
+  appears_on:
+    - entity.author_management.collection

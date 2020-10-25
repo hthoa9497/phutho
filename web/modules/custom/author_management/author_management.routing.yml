@@ -1,0 +1,7 @@
+entity.author_management.settings:
+  path: 'admin/structure/author-management'
+  defaults:
+    _form: '\Drupal\author_management\Form\AuthorManagementSettingsForm'
+    _title: 'Author Management'
+  requirements:
+    _permission: 'administer author management'

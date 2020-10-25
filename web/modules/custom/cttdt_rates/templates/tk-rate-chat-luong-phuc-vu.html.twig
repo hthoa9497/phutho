@@ -1,0 +1,81 @@
+<div class="rate-co-quan-ban-nghanh mt-3">
+  <div class="row">
+    <div class="col-12 tk-form-filter">
+      {{ form }}
+    </div>
+    <div class="col-12 rate-content">
+      <table id="tk-rate-chat-luong-pv" class="table table-bordered table-tk">
+        <thead>
+          <tr>
+            <th scope="col" class="text-align-center">TT</th>
+            <th scope="col" class="text-align-center">{{ 'Đơn vị'|t }}</th>
+            <th scope="col" class="text-align-center">{{ 'Mức độ đánh giá'|t }}</th>
+            <th scope="col" class="text-align-center">{{ 'Số lượt đánh giá'|t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="message-empty {{ (data is empty) ? '' : 'd-none' }}">
+            <td colspan="7" class="text-align-center"><span>{{ 'Không tìm thấy dữ liệu'|t }}</span></td>
+          </tr>
+          {% for k, dv in data %}
+            {% set stt = loop.index %}
+            {% for key, rate in dv['rate_data'] %}
+              {% if dv['rate_data']|length == 1 %}
+                <tr class="post-item">
+                  <td class="align-middle text-align-center">{{ stt }}</td>
+                  <td class="align-middle">{{ dv['don_vi'] }}</td>
+                  {% if key == 0 %}
+                    <td>{{ 'Rất hài lòng'|t }}</td>
+                  {% elseif key == 1 %}
+                    <td>{{ 'Hài lòng'|t }}</td>
+                  {% elseif key == 2 %}
+                    <td>{{ 'Chấp nhận được'|t }}</td>
+                  {% elseif key == 3 %}
+                    <td>{{ 'Không hài lòng'|t }}</td>
+                  {% else %}
+                    <td>{{ 'Không thể chấp nhận được'|t }}</td>
+                  {% endif %}
+                  <td class="text-align-center">{{ rate > 0 ? rate : '0' }}</td>
+                </tr>
+              {% else %}
+                {% if loop.index == 1 %}
+                  <tr class="post-item">
+                    <td rowspan="{{ dv['rate_data']|length }}" class="align-middle text-align-center">{{ stt }}</td>
+                    <td rowspan="{{ dv['rate_data']|length }}" class="align-middle">{{ dv['don_vi'] }}</td>
+                    {% if key == 0 %}
+                      <td>{{ 'Rất hài lòng'|t }}</td>
+                    {% elseif key == 1 %}
+                      <td>{{ 'Hài lòng'|t }}</td>
+                    {% elseif key == 2 %}
+                      <td>{{ 'Chấp nhận được'|t }}</td>
+                    {% elseif key == 3 %}
+                      <td>{{ 'Không hài lòng'|t }}</td>
+                    {% else %}
+                      <td>{{ 'Không thể chấp nhận được'|t }}</td>
+                    {% endif %}
+                    <td class="text-align-center">{{ rate > 0 ? rate : '0' }}</td>
+                  </tr>
+                {% else %}
+                  <tr class="post-item">
+                    {% if key == 0 %}
+                      <td>{{ 'Rất hài lòng'|t }}</td>
+                    {% elseif key == 1 %}
+                      <td>{{ 'Hài lòng'|t }}</td>
+                    {% elseif key == 2 %}
+                      <td>{{ 'Chấp nhận được'|t }}</td>
+                    {% elseif key == 3 %}
+                      <td>{{ 'Không hài lòng'|t }}</td>
+                    {% else %}
+                      <td>{{ 'Không thể chấp nhận được'|t }}</td>
+                    {% endif %}
+                    <td class="text-align-center">{{ rate > 0 ? rate : '0' }}</td>
+                  </tr>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="tk-bao-cao-dv mt-3">
+  <div class="row">
+    <div class="col-12 tk-form-filter">
+      {{ form }}
+    </div>
+    <div class="col-12 rate-content">
+      <table class="table table-bordered table-tk">
+        <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">{{ 'Tên đơn vị'|t }}</th>
+          <th scope="col">{{ 'Tổng số câu hỏi'|t }}</th>
+          <th scope="col">{{ 'Đã trả lời'|t }}</th>
+          <th scope="col">{{ 'Chưa trả lời'|t }}</th>
+          <th scope="col">{{ 'Chậm trả lời'|t }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if data is not empty %}
+          {% set total_question = 0 %}
+          {% set total_answered = 0 %}
+          {% set not_answered = 0 %}
+          {% set delay_answer = 0 %}
+
+          {% for item in data %}
+
+            {% set total_question = item['total_questions'] > 0 ? (total_question + item['total_questions']) : total_question %}
+            {% set total_answered = item['total_answered'] > 0 ? (total_answered + item['total_answered']) : total_answered %}
+            {% set not_answered = item['not_answered'] > 0 ? (not_answered + item['not_answered']) : not_answered %}
+            {% set delay_answer = item['delay_answer'] > 0 ? (delay_answer + item['delay_answer']) : delay_answer %}
+            <tr class="post-item">
+              <th scope="row" class="text-align-center">{{ loop.index }}</th>
+              <td>{{ item['don_vi'] }}</td>
+              <td class="text-align-center">{{ item['total_questions'] }}</td>
+              <td class="text-align-center">{{ item['total_answered'] }}</td>
+              <td class="text-align-center">{{ item['not_answered'] }}</td>
+              <td class="text-align-center">{{ item['delay_answer'] }}</td>
+            </tr>
+          {% endfor %}
+          <tr class="post-item">
+            <td colspan="2" class="text-align-center"><b>{{ 'Tổng:' }}</b></td>
+            <td class="text-align-center">{{ total_question }}</td>
+            <td class="text-align-center">{{ total_answered }}</td>
+            <td class="text-align-center">{{ not_answered }}</td>
+            <td class="text-align-center">{{ delay_answer }}</td>
+          </tr>
+        {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+

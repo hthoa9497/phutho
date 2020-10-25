@@ -1,0 +1,4 @@
+services:
+  cttdt_rates.rate:
+    class: Drupal\cttdt_rates\CttdtRatesService
+    arguments: ['@entity_type.manager', '@current_user', '@database']

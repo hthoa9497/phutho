@@ -1,0 +1,5 @@
+administer question survey:
+  title: 'Administer question survey settings'
+  restrict access: true
+access question survey overview:
+  title: 'Access question survey overview page'

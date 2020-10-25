@@ -1,0 +1,15 @@
+name: CKEditor Form Elements
+type: module
+description: List button form elements.
+# core: 8.x
+
+dependencies:
+  - ckeditor
+
+package: CKEditor
+
+
+# Information added by ttrao
+version: '8.x-2.1'
+core: '8.x'
+project: 'phutho_ckeditor_forms'

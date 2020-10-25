@@ -1,0 +1,13 @@
+cttdt_dashboard.cttdt_config_form:
+  title: 'CTTDT Config Form'
+  route_name: cttdt_dashboard.cttdt_config_form
+  description: 'A description for the menu entry'
+  parent: system.admin_config_system
+  weight: 99
+
+cttdt_dashboard.statistic_node_view_count_report:
+  title: 'Thống kê lượt truy cập'
+  description: 'Thống kê số lượt xem của từng page'
+  parent: system.admin_reports
+  route_name: cttdt_dashboard.admin_statistics_view_count
+  weight: 100

@@ -1,0 +1,15 @@
+cttdt_content_cleaner.clear_old_content_form:
+  path: '/cttdt_content_cleaner/clear_old_content_form'
+  defaults:
+#    _controller: Drupal\cttdt_content_cleaner\Controller\ContentCleanerController::clearOldContent
+    _form: '\Drupal\cttdt_content_cleaner\Form\BatchDeleteForm'
+    _title: 'Deleting Nodes Form'
+  requirements:
+    _role: 'administrator'
+cttdt_content_cleaner.clear_unused_terms:
+  path: '/cttdt_content_cleaner/clear_unused_term'
+  defaults:
+    _controller: Drupal\cttdt_content_cleaner\Controller\ContentCleanerController::clearUnusedTerm
+#    _title: 'Deleting Nodes Form'
+  requirements:
+    _role: 'administrator'

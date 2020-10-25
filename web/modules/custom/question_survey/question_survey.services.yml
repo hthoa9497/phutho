@@ -1,0 +1,4 @@
+services:
+  question_survey.survey:
+    class: Drupal\question_survey\QuestionSurveyService
+    arguments: ['@entity_type.manager']

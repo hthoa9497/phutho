@@ -1,0 +1,5 @@
+administer cttdt rates:
+  title: 'Administer cttdt rates settings'
+  restrict access: true
+access cttdt rates overview:
+  title: 'Access cttdt rates overview page'

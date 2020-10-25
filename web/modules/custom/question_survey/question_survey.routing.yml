@@ -1,0 +1,14 @@
+entity.question_survey.settings:
+  path: 'admin/structure/question-survey'
+  defaults:
+    _form: '\Drupal\question_survey\Form\QuestionSurveySettingsForm'
+    _title: 'Question Survey'
+  requirements:
+    _permission: 'administer question survey'
+
+question_survey.get_result:
+   path: '/question-survey/result'
+   defaults:
+     _controller: Drupal\question_survey\Controller\QuestionSurveyController::getSurveyResult
+   requirements:
+     _permission: 'access content'

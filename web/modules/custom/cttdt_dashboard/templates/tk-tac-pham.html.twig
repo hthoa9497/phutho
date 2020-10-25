@@ -1,0 +1,68 @@
+<div class="tk-form-filter">
+  {{ form }}
+</div>
+<button class="btn btn-print-tk-ct"><i class="fa fa-print"></i></button>
+
+<table id="tk-chi-tiet-tp" class="table table-bordered table-tk">
+  <thead>
+  <tr>
+    <th scope="col">TT</th>
+    <th scope="col" class="text-align-center">{{ 'Tác giả'|t }}</th>
+    <th scope="col" class="text-align-center">{{ 'Tác Phẩm'|t }}</th>
+    <th scope="col" class="text-align-center">{{ 'Ngày duyệt'|t }}</th>
+    <th scope="col" class="text-align-center">{{ 'Thể loại TP'|t }}</th>
+    <th scope="col" class="text-align-center">{{ 'Hệ số TP'|t }}</th>
+    <th scope="col" class="text-align-center">{{ 'Tổng HS'|t }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td colspan="7" class="text-align-center"><h3>{{ 'Tác Phẩm Của BBT, Cán Bộ Phòng Cổng TTĐT'|upper|t }}</h3></td>
+  </tr>
+  <tr class="message-empty {{ (data is empty) ? '' : 'd-none' }}">
+    <td colspan="7" class="text-align-center"><span>{{ 'Không tìm thấy tác phẩm'|t }}</span></td>
+  </tr>
+  {% for item in data %}
+    {% set item_total = item|length - 1 %}
+    {% set stt = loop.index %}
+    {% if item_total > 1 %}
+      {% for post in item %}
+        {% if loop.index == 1 %}
+          <tr class="post-item">
+            <th scope="row" rowspan="{{ item_total }}" class="align-middle text-align-center">{{ stt }}</th>
+            <td rowspan="{{ item_total }}" class="align-middle text-align-center">{{ post.post_tac_gia }}</td>
+            <td>{{ post.post_title }}</td>
+            <td>{{ post.post_changed }}</td>
+            <td>{{ post.post_the_loai }}</td>
+            <td>{{ post.post_hs_nb }}</td>
+            <td rowspan="{{ item_total }}" class="align-middle text-align-center">{{ item.total_hs }}</td>
+          </tr>
+        {% else %}
+          {% if loop.index < item|length %}
+            <tr class="post-item">
+              <td>{{ post.post_title }}</td>
+              <td>{{ post.post_changed }}</td>
+              <td>{{ post.post_the_loai }}</td>
+              <td>{{ post.post_hs_nb }}</td>
+            </tr>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <tr class="post-item">
+        {% for post in item %}
+          {% if loop.index < item|length %}
+            <th scope="row" class="align-middle text-align-center">{{ stt }}</th>
+            <td class="align-middle text-align-center">{{ post.post_tac_gia }}</td>
+            <td>{{ post.post_title }}</td>
+            <td>{{ post.post_changed }}</td>
+            <td>{{ post.post_the_loai }}</td>
+            <td>{{ post.post_hs_nb }}</td>
+            <td class="align-middle text-align-center">{{ post.post_hs_nb }}</td>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    {% endif %}
+  {% endfor %}
+  </tbody>
+</table>

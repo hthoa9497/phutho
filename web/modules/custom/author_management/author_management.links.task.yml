@@ -1,0 +1,22 @@
+entity.author_management.settings:
+  title: Settings
+  route_name: entity.author_management.settings
+  base_route: entity.author_management.settings
+entity.author_management.view:
+  title: View
+  route_name: entity.author_management.canonical
+  base_route: entity.author_management.canonical
+entity.author_management.edit_form:
+  title: Edit
+  route_name: entity.author_management.edit_form
+  base_route: entity.author_management.canonical
+entity.author_management.delete_form:
+  title: Delete
+  route_name: entity.author_management.delete_form
+  base_route: entity.author_management.canonical
+  weight: 10
+entity.author_management.collection:
+  title: Author Management
+  route_name: entity.author_management.collection
+  base_route: system.admin_content
+  weight: 10

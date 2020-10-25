@@ -1,0 +1,4 @@
+services:
+  cttdt_migration.migration:
+    class: Drupal\cttdt_migration\MigrationService
+    arguments: []

@@ -1,0 +1,5 @@
+name: 'CTTDT Content Cleaner'
+type: module
+description: 'CTTDT clear old content module'
+core: 8.x
+package: 'custom'

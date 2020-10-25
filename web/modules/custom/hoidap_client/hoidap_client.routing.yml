@@ -1,0 +1,65 @@
+hoidap_client.hoidap-traloi:
+  path: '/hoi-dap-tra-loi/{id}'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::hoiDapTraLoi
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.hoidap-traloi-dn:
+  path: '/hoi-dap-tra-loi-dn/{id}'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::hoiDapTraLoiDN
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.danh-sach-cau-hoi:
+  path: '/hoi-dap-tra-loi'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::getDSCauHoi
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.danh-sach-cau-hoi-dn:
+  path: '/hoi-dap-tra-loi-dn'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::getDSCauHoiDN
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.cau-hoi-chua-tra-loi:
+  path: '/hoi-dap-tra-loi/chua-tra-loi'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::getCauHoiChuaTraLoi
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.cau-hoi-chua-tra-loi-dn:
+  path: '/hoi-dap-tra-loi-dn/chua-tra-loi'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::getCauHoiChuaTraLoiDN
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.hoi-dap-info:
+  path: '/hoi-dap-info'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::getHoiDapInfo
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.bao-cao-don-vi:
+  path: '/bao-cao-don-vi'
+  defaults:
+    _controller: Drupal\hoidap_client\Controller\HoiDapClientController::getBaoCaoDv
+  requirements:
+    _role: 'don_vi'
+
+hoidap_client.hoidap_config_form:
+  path: '/hoidap_client/form/config'
+  defaults:
+    _form: '\Drupal\hoidap_client\Form\HoiDapConfigForm'
+    _title: 'Hoi Dap Config Form'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

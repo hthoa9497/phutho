@@ -1,0 +1,10 @@
+entity.question_survey.settings:
+  title: Question Survey
+  description: Configure a Question Survey entity type
+  route_name:  entity.question_survey.settings
+  parent: system.admin_structure
+entity.question_survey.collection:
+  title: Question Surveies
+  description: List of question surveies
+  route_name: entity.question_survey.collection
+  parent: system.admin_content

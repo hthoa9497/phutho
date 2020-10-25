@@ -1,0 +1,63 @@
+<?php
+//
+//use Drupal\Core\Form\FormStateInterface;
+//use Drupal\node\Entity\Node;
+//
+//function cttdt_migration_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+//  if ($form_id == 'node_article_form') {
+//    $old_post = \Drupal::service('cttdt_migration.migration')->listOldPost();
+//    if (!empty($old_post)) {
+//      foreach ($old_post as $item) {
+//        if (!empty($item['TieuDe'])) {
+//          $title = html_entity_decode($item['TieuDe']);
+//        }
+//
+//        if (!empty($item['ChuyenMuc'])) {
+//          $cm_id = \Drupal::service('cttdt_migration.migration')->getTidByName(mb_strtolower($item['ChuyenMuc']));
+//        }
+//
+//        if (!empty($item['LoaiTin'])) {
+//          $the_loai_id = \Drupal::service('cttdt_migration.migration')->getTidByName(mb_strtolower($item['LoaiTin']));
+//        }
+//
+//        $body = [];
+//        if (!empty($item['MoTa']) || !empty($item['NoiDung'])) {
+//          $body = [
+//            'summary' => html_entity_decode($item['MoTa']),
+//            'value' => html_entity_decode($item['NoiDung']),
+//            'format' => 'full_html',
+//          ];
+//        }
+//
+//        if (!empty($item['NgayXuatBan'])) {
+//          $created = strtotime($item['NgayXuatBan']);
+//        }
+//
+//        if (!empty($item['TacGia'])) {
+//          $tac_gia = $item['TacGia'];
+//        }
+//
+//        $remoteDocPath = $item['AnhDaiDien']['LinkLuuTru'];
+//        $doc = system_retrieve_file($remoteDocPath, 'public://2019-12/', FALSE, FILE_EXISTS_REPLACE);
+//        $image_dai_dien = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($doc);
+//
+//        $node = Node::create(['type' => 'article']);
+//        $node->set('title', $title);
+//        $node->set('body', $body);
+//        $node->set('field_danh_muc',  ['target_id' => $cm_id]);
+//        $node->set('field_the_loai',  ['target_id' => $the_loai_id]);
+//        $node->set('field_image', array(
+//          'target_id' => !empty($image_dai_dien) ? $image_dai_dien->id() : '',
+//          'alt' => $item['AnhDaiDien']['Ten'],
+//          'title' => $item['AnhDaiDien']['Ten'],
+//        ));
+//        $node->set('field_tac_gia', $tac_gia);
+//        $node->set('created', $created);
+//        $node->setPublished(TRUE);
+//        $node->set('moderation_state', "published");
+//        $node->enforceIsNew();
+//        $node->save();
+//      }
+//    }
+//  }
+//}

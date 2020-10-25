@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * Contains cttdt_hoi_dap.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function cttdt_hoi_dap_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cttdt_hoi_dap module.
+    case 'help.page.cttdt_hoi_dap':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module for Hoi Dap') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cttdt_hoi_dap_theme() {
+  return [
+    'bao_cao_don_vi' => [
+      'variables' => array('form' => NULL, 'data' => NULL),
+      'template' => 'bao-cao-don-vi',
+    ],
+    'ds_cham_tra_loi' => [
+      'variables' => array('form' => NULL, 'data' => NULL),
+      'template' => 'ds-cham-tra-loi',
+    ]
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function cttdt_hoi_dap_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  if ($form_id === 'node_hoi_dap_form' || $form_id === 'node_hoi_dap_doanh_nghiep_form') {
+    if (\Drupal::currentUser()->isAnonymous()) {
+      $form['field_thoi_gian_tra_loi']['#access'] = FALSE;
+      $form['field_thoi_gian_tra_loi']['widget'][0]['value']['#required'] = FALSE;
+      $form['field_thoi_gian_xuat_ban']['#access'] = FALSE;
+      $form['field_thoi_gian_xuat_ban']['widget'][0]['value']['#required'] = FALSE;
+      $form['field_thoi_gian_gui']['#access'] = FALSE;
+      $form['field_thoi_gian_gui']['widget'][0]['value']['#required'] = FALSE;
+      unset($form['field_file_dinh_kem_tra_loi']);
+      unset($form['field_tra_loi']);
+
+      $form['field_don_vi_xu_ly']['#attributes']['class'][3] = 'hidden';
+      $form['moderation_state']['#attributes']['class'][] = 'hidden';
+      $dvId = \Drupal::request()->query->get('IDDV');
+      if (!empty($dvId)) {
+        $form['field_don_vi_xu_ly']['widget']['#default_value'] = $dvId;
+      }
+    }
+    $form['field_gui_file_dinh_kem']['widget'][0]['#description'] = t('(*.doc,*.docx,*.zip,*.pdf,*.jpg)');
+    $form['actions']['preview']['#access'] = FALSE;
+
+  }
+
+  if ($form_id === 'node_hoi_dap_form') {
+    $form['actions']['submit']['#value'] = t('Gửi câu hỏi');
+    $form['actions']['submit']['#submit'][] = 'cttdt_hoidap_submit';
+  }
+
+  if ($form_id === 'node_hoi_dap_doanh_nghiep_form') {
+    $form['actions']['submit']['#value'] = t('Gửi ý kiến');
+    $form['actions']['submit']['#submit'][] = 'cttdt_hoidap_dn_submit';
+  }
+
+  if ($form_id === 'node_hoi_dap_edit_form' || $form_id === 'node_hoi_dap_doanh_nghiep_edit_form') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $current_user = \Drupal::currentUser();
+    $roles = $current_user->getRoles();
+
+    $moderation_state = $node->get('moderation_state')->getValue();
+    $moderation_state = $moderation_state[0]['value'];
+
+    if (in_array('qtv', $roles) || in_array('pgd_tt_phu_trach_cong_ttdt', $roles)
+      || in_array('truong_bbt', $roles) || in_array('administrator', $roles) || in_array('vpub', $roles)) {
+      if ($moderation_state == 'draft') {
+        unset($form['field_file_dinh_kem_tra_loi']);
+        unset($form['field_tra_loi']);
+      }
+    }
+  }
+}
+
+function cttdt_hoidap_submit($form, FormStateInterface $form_state) {
+  $messenger = \Drupal::messenger();
+  $messenger->addMessage(t('Gửi câu hỏi thành công.'), 'status', TRUE);
+  $form_state->setRedirect('view.danh_sach_cau_hoi_dap.page_1');
+}
+
+function cttdt_hoidap_dn_submit($form, FormStateInterface $form_state) {
+  $messenger = \Drupal::messenger();
+  $messenger->addMessage(t('Gửi câu hỏi thành công.'), 'status', TRUE);
+  $form_state->setRedirect('view.danh_sach_cau_hoi_dap.page_2');
+}

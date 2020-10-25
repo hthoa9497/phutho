@@ -1,0 +1,28 @@
+<div class="tk-form-filter">
+  {{ form }}
+</div>
+<button class="btn btn-print-tk-ct"><i class="fa fa-print"></i></button>
+
+<table id="tk-chi-tiet-nb" class="table table-bordered table-tk">
+  <thead>
+    <tr>
+      <th scope="col">TT</th>
+      <th scope="col" class="text-align-center">{{ 'Tác giả'|t }}</th>
+      <th scope="col" class="text-align-center">{{ 'Tiền nhuận bút'|t }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="message-empty {{ (data is empty) ? '' : 'd-none' }}">
+      <td colspan="7" class="text-align-center"><span>{{ 'Không tìm thấy nhuận bút'|t }}</span></td>
+    </tr>
+    {% if data is not empty %}
+      {% for item in data %}
+        <tr class="post-item">
+          <th scope="row" class="text-align-center">{{ loop.index }}</th>
+          <td class="text-align-center">{{ item.post_ho_ten }}</td>
+          <td class="text-align-center">{{ item.tien_nhuan_but }}</td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>

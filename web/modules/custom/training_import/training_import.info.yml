@@ -1,0 +1,7 @@
+name: 'Training Import'
+type: module
+description: 'The Training Import Module'
+package: 'Training'
+
+version: '8.x-1.0'
+core: '8.x'

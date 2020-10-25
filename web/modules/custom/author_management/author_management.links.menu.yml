@@ -1,0 +1,10 @@
+entity.author_management.settings:
+  title: Author Management
+  description: Configure an Author Management entity type
+  route_name:  entity.author_management.settings
+  parent: system.admin_structure
+entity.author_management.collection:
+  title: Author Managements
+  description: List of author managements
+  route_name: entity.author_management.collection
+  parent: system.admin_content

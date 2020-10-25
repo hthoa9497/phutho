@@ -1,0 +1,20 @@
+training_import.config:
+  title: Training
+  route_name: training_import.config
+  description: 'Training Config'
+  parent: system.admin
+  weight: 100
+
+training_import.import:
+  title: Training Import
+  route_name: training_import.import
+  description: 'Training Import Form.'
+  parent: training_import.config
+  weight: 100
+
+training_import.customer_list:
+  title: Customers
+  route_name: training_import.customer_list
+  description: 'Customer List.'
+  parent: training_import.config
+  weight: 101

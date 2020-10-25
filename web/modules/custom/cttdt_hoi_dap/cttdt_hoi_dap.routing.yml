@@ -1,0 +1,77 @@
+cttdt_hoi_dap.hoi-dap:
+  path: '/hoi-dap/{id}'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getHoiDap
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.hoi-dap-dn:
+  path: '/hoi-dap-dn/{id}'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getHoiDapDN
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.tra-loi:
+  path: '/tra-loi'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::traLoiHoiDap
+  methods:  [POST]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.hoi-dap-dv:
+  path: '/hoi-dap'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getHoiDapChuaTraLoi
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.hoi-dap-dv-dn:
+  path: '/hoi-dap-dn-chua-tra-loi'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getHoiDapChuaTraLoiDN
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.hoi-dap-list:
+  path: '/ds-hoi-dap'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getListHoiDap
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.hoi-dap-list-dn:
+  path: '/ds-hoi-dap-dn'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getListHoiDapDN
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.bao-cao-by-dv:
+  path: '/bao-cao-by-dv'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getBaoCaoByDv
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+cttdt_hoi_dap.bao-cao-don-vi:
+  path: '/bao-cao-don-vi'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::baoCaoDV
+  requirements:
+    _role: 'administrator+qtv+pgd_tt_phu_trach_cong_ttdt+truong_bbt'
+
+cttdt_hoi_dap.ds-cham-tra-loi:
+  path: '/cham-tra-loi'
+  defaults:
+    _controller: Drupal\cttdt_hoi_dap\Controller\HoiDapController::getChamTraLoi
+  requirements:
+    _role: 'administrator+qtv+pgd_tt_phu_trach_cong_ttdt+truong_bbt'

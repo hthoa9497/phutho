@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Provides a cttdt rates entity type.
+ */
+
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_theme().
+ */
+function cttdt_rates_theme() {
+  return [
+    'cttdt_rates' => [
+      'render element' => 'elements',
+    ],
+    'cttdt_rates_co_quan' => [
+      'variables' => array('data' => NULL),
+      'template' => 'rate-co-quan',
+    ],
+    'tk_rate_chat_luong' => [
+      'variables' => array('form' => NULL, 'data' => NULL),
+      'template' => 'tk-rate-chat-luong-phuc-vu',
+    ]
+  ];
+}

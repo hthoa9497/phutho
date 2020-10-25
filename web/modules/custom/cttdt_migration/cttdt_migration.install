@@ -1,0 +1,700 @@
+<?php
+
+use Drupal\Core\Url;
+use Drupal\media\Entity\Media;
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_update_8001().
+ *
+ * Migration all posts from old database to new database
+ */
+//function cttdt_migration_update_8001(&$sandbox) {
+//  if (!isset($sandbox['total'])) {
+//    $old_post = \Drupal::service('cttdt_migration.migration')->listOldPost();
+//    $sandbox['total'] = count($old_post);
+//    $sandbox['current'] = 0;
+//  }
+//
+//  $nodes_per_batch = 25;
+//
+//  $old_post = \Drupal::service('cttdt_migration.migration')->listOldPost();
+//  if (!empty($old_post)) {
+//    $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+//
+//    if (!empty($old_post_slice)) {
+//      foreach ($old_post_slice as $item) {
+//        if (strlen($item['TieuDe']) <= 255) {
+//          if (!empty($item['TieuDe'])) {
+//            $title = html_entity_decode($item['TieuDe']);
+//          }
+//
+//          if (!empty($item['ChuyenMuc'])) {
+//            $cm_id = \Drupal::service('cttdt_migration.migration')->getTidByName(mb_strtolower($item['ChuyenMuc']));
+//          }
+//
+//          if (!empty($item['LoaiTin'])) {
+//            $the_loai_id = \Drupal::service('cttdt_migration.migration')->getTidByName(mb_strtolower($item['LoaiTin']));
+//          }
+//
+//          $body = [];
+//          if (!empty($item['MoTa']) || !empty($item['NoiDung'])) {
+//            $body = [
+//              'summary' => html_entity_decode($item['MoTa']),
+//              'value' => html_entity_decode($item['NoiDung']),
+//              'format' => 'full_html',
+//            ];
+//          }
+//
+//          if (!empty($item['NgayXuatBan'])) {
+//            $created = strtotime($item['NgayXuatBan']);
+//          }
+//
+//          if (!empty($item['TacGia'])) {
+//            $tac_gia = $item['TacGia'];
+//          }
+//
+//          $remoteDocPath = $item['AnhDaiDien']['LinkLuuTru'];
+//          $doc = system_retrieve_file($remoteDocPath, 'public://2019-12/', FALSE, FILE_EXISTS_REPLACE);
+//          if (!empty($doc)) {
+//            $image_dai_dien = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($doc);
+//          }
+//          else {
+//            $image_dai_dien = NULL;
+//          }
+//
+//          $node = Node::create(['type' => 'article']);
+//          $node->set('title', $title);
+//          $node->set('body', $body);
+//          $node->set('field_danh_muc',  ['target_id' => $cm_id]);
+//          $node->set('field_the_loai',  ['target_id' => $the_loai_id]);
+//          if (!empty($image_dai_dien)) {
+//            $node->set('field_image', array(
+//              'target_id' => $image_dai_dien->id(),
+//              'alt' => $item['AnhDaiDien']['Ten'],
+//              'title' => $item['AnhDaiDien']['Ten'],
+//            ));
+//          }
+//          $node->set('field_tac_gia', $tac_gia);
+//          $node->set('created', $created);
+//          $node->setPublished(TRUE);
+//          $node->set('moderation_state', "published");
+//          $node->enforceIsNew();
+//          $node->save();
+//        }
+//        $sandbox['current']++;
+//      }
+//    }
+//
+//    \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+//
+//    if ($sandbox['total'] == 0) {
+//      $sandbox['#finished'] = 1;
+//    }
+//    else {
+//      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+//    }
+//  }
+//}
+
+function cttdt_migration_update_8098(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $old_post = \Drupal::service('cttdt_migration.migration')->listOldPostChuyenTrang('migration_db/TinTuc_BHXH_BHYT.json');
+    $sandbox['total'] = count($old_post);
+    $sandbox['current'] = 0;
+  }
+
+  $nodes_per_batch = 25;
+
+  $old_post = \Drupal::service('cttdt_migration.migration')->listOldPostChuyenTrang('migration_db/TinTuc_BHXH_BHYT.json');
+  if (!empty($old_post)) {
+    $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+
+    if (!empty($old_post_slice)) {
+      foreach ($old_post_slice as $item) {
+        if (strlen($item['TieuDe']) <= 255) {
+          if (!empty($item['TieuDe'])) {
+            $title = html_entity_decode($item['TieuDe']);
+          }
+
+          if (!empty($item['ChuyenMuc'])) {
+            $cm_id = \Drupal::service('cttdt_migration.migration')->getTidByChuyenTrang($item['ChuyenMuc']);
+          }
+
+          if (!empty($item['LoaiTin'])) {
+            $the_loai_id = \Drupal::service('cttdt_migration.migration')->getTidByName(mb_strtolower($item['LoaiTin']));
+          }
+
+          $body = [];
+          if (!empty($item['MoTa']) || !empty($item['NoiDung'])) {
+            $body = [
+              'summary' => html_entity_decode($item['MoTa']),
+              'value' => html_entity_decode($item['NoiDung']),
+              'format' => 'full_html',
+            ];
+          }
+
+          if (!empty($item['NgayXuatBan'])) {
+            $created = strtotime($item['NgayXuatBan']);
+          }
+
+          if (!empty($item['TacGia'])) {
+            $tac_gia = $item['TacGia'];
+          }
+
+          $remoteDocPath = $item['AnhDaiDien']['LinkLuuTru'];
+          $doc = system_retrieve_file($remoteDocPath, 'public://2020-03/', FALSE, FILE_EXISTS_REPLACE);
+          if (!empty($doc)) {
+            $image_dai_dien = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($doc);
+          }
+          else {
+            $image_dai_dien = NULL;
+          }
+
+          $node = Node::create(['type' => 'article']);
+          $node->set('title', $title);
+          $node->set('body', $body);
+          $node->set('field_danh_muc',  ['target_id' => $cm_id]);
+          $node->set('field_the_loai',  ['target_id' => $the_loai_id]);
+          if (!empty($image_dai_dien)) {
+            $node->set('field_image', array(
+              'target_id' => $image_dai_dien->id(),
+              'alt' => $item['AnhDaiDien']['Ten'],
+              'title' => $item['AnhDaiDien']['Ten'],
+            ));
+          }
+          $node->set('field_tac_gia', $tac_gia);
+          $node->set('created', $created);
+          $node->setPublished(TRUE);
+          $node->set('moderation_state', "published");
+          $node->enforceIsNew();
+          $node->save();
+        }
+        $sandbox['current']++;
+      }
+    }
+
+    \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+
+    if ($sandbox['total'] == 0) {
+      $sandbox['#finished'] = 1;
+    }
+    else {
+      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+    }
+  }
+}
+
+//Migration TTHC
+function cttdt_migration_update_8099(&$sandbox) {
+    if (!isset($sandbox['total'])) {
+      $old_post = \Drupal::service('cttdt_migration.migration')->listThuTucHanhChinh();
+      $sandbox['total'] = count($old_post);
+      $sandbox['current'] = 0;
+    }
+
+    $nodes_per_batch = 25;
+
+    $old_post = \Drupal::service('cttdt_migration.migration')->listThuTucHanhChinh();
+    if (!empty($old_post)) {
+      $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+
+      if (!empty($old_post_slice)) {
+        foreach ($old_post_slice as $item) {
+          if (strlen($item['ten_thu_tuc']) <= 255) {
+            if (!empty($item['ten_thu_tuc'])) {
+              $title = html_entity_decode($item['ten_thu_tuc']);
+            }
+
+            if (!empty($item['co_quan'])) {
+              $co_quan_id = \Drupal::service('cttdt_migration.migration')->getTidByChuyenTrang($item['co_quan']);
+            }
+
+            if (!empty($item['created'])) {
+              $created = strtotime($item['created']);
+            }
+
+            $file_tai_lieu = [];
+            if (!empty($item['file_dinh_kem'])) {
+              foreach ($item['file_dinh_kem'] as $key => $file) {
+                $file_data = system_retrieve_file($file['LinkLuuTru'], 'public://2020-02/', FALSE, FILE_EXISTS_REPLACE);
+                if (!empty($file_data)) {
+                  $tai_lieu = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($file_data);
+
+                  $media = Media::create([
+                    'bundle'           => 'file',
+                    'uid'              => \Drupal::currentUser()->id(),
+                    'field_media_file' => [
+                      'target_id' => $tai_lieu->id()
+                    ]
+                  ]);
+                  $media->save();
+                  $file_tai_lieu[]['target_id'] = $media->id();
+                }
+              }
+            }
+
+            $node = Node::create(['type' => 'bo_thu_tuc_hanh_chinh']);
+            $node->set('title', $title);
+            $node->set('field_trinh_tu_thuc_hien', $item['trinh_tu_thuc_hien']);
+            $node->set('field_cach_thuc_thuc_hien', $item['cach_thuc_thuc_hien']);
+            $node->set('field_thanh_phan_so_luong_ho_so', $item['tp_ho_so']);
+            $node->set('field_thoi_han_giai_quyet', $item['thoi_han_giai_quyet']);
+            if (strlen($item['doi_tuong_thuc_hien']) <= 255) {
+              $node->set('field_doi_tuong_thuc_hien', $item['doi_tuong_thuc_hien']);
+            }
+            $node->set('field_ket_qua_thuc_hien', $item['ket_qua_thuc_hien']);
+            $node->set('field_chi_phi', $item['chi_phi']);
+            $node->set('field_mau_don_mau_to_khai', $item['mau_to_khai']);
+            $node->set('field_yeu_cau', $item['yeu_cau']);
+            $node->set('field_co_so_phap_ly', $item['co_so_phap_ly']);
+            if (strlen($item['linh_vuc']) <= 255) {
+              $node->set('field_linh_vuc', $item['linh_vuc']);
+            }
+            $node->set('field_co_quan_thuc_hien',  ['target_id' => $co_quan_id]);
+            if (!empty($file_tai_lieu)) {
+              $node->set('field_tai_lieu_dinh_kem', $file_tai_lieu);
+            }
+            $node->set('created', $created);
+            $node->setPublished(TRUE);
+            $node->enforceIsNew();
+            $node->save();
+          }
+          $sandbox['current']++;
+        }
+      }
+
+      \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+
+      if ($sandbox['total'] == 0) {
+        $sandbox['#finished'] = 1;
+      }
+      else {
+        $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+      }
+    }
+}
+
+function cttdt_migration_update_8078(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $old_post = \Drupal::service('cttdt_migration.migration')->albumVideo();
+    $sandbox['total'] = count($old_post);
+    $sandbox['current'] = 0;
+  }
+
+  $nodes_per_batch = 25;
+
+  $old_post = \Drupal::service('cttdt_migration.migration')->albumVideo();
+  if (!empty($old_post)) {
+    $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+
+    if (!empty($old_post_slice)) {
+      foreach ($old_post_slice as $item) {
+        if (strlen($item['tieu_de']) <= 255) {
+          if (!empty($item['tieu_de'])) {
+            $title = html_entity_decode($item['tieu_de']);
+          }
+
+          if (!empty($item['chuyen_muc'])) {
+            $cm_id = \Drupal::service('cttdt_migration.migration')->getTidByChuyenTrang($item['chuyen_muc']);
+          }
+
+          $body = [];
+          if (!empty($item['mo_ta'])) {
+            $body = [
+              'value' => html_entity_decode($item['mo_ta']),
+              'format' => 'full_html',
+            ];
+          }
+
+          if (!empty($item['created'])) {
+            $created = strtotime($item['created']);
+          }
+
+          if (!empty($item['tac_gia'])) {
+            $tac_gia = $item['tac_gia'];
+          }
+
+          $remoteDocPath = $item['anh_dai_dien'];
+          $remoteDocPath = str_replace("/Upload", "http://phutho.gov.vn/Upload", $remoteDocPath);
+          $doc = system_retrieve_file($remoteDocPath, 'public://2020-03/', FALSE, FILE_EXISTS_REPLACE);
+          if (!empty($doc)) {
+            $image_dai_dien = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($doc);
+          }
+          else {
+            $image_dai_dien = NULL;
+          }
+
+          $node = Node::create(['type' => 'video']);
+          $node->set('title', $title);
+          $node->set('body', $body);
+          $node->set('field_video_chuyen_muc',  ['target_id' => $cm_id]);
+          if (!empty($image_dai_dien)) {
+            $node->set('field_video_anh_dai_dien', array(
+              'target_id' => $image_dai_dien->id()
+            ));
+          }
+          $node->set('field_link_video_old', $item['link_old_video']);
+          $node->set('field_tac_gia', $tac_gia);
+          $node->set('created', $created);
+          $node->setPublished(TRUE);
+          $node->enforceIsNew();
+          $node->save();
+        }
+        $sandbox['current']++;
+      }
+    }
+
+    \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+
+    if ($sandbox['total'] == 0) {
+      $sandbox['#finished'] = 1;
+    }
+    else {
+      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+    }
+  }
+}
+
+function cttdt_migration_update_8077(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $old_post = \Drupal::service('cttdt_migration.migration')->albumAnh();
+    $sandbox['total'] = count($old_post);
+    $sandbox['current'] = 0;
+  }
+
+  $nodes_per_batch = 25;
+
+  $old_post = \Drupal::service('cttdt_migration.migration')->albumAnh();
+  if (!empty($old_post)) {
+    $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+
+    if (!empty($old_post_slice)) {
+      foreach ($old_post_slice as $item) {
+        if (strlen($item['tieu_de']) <= 255) {
+          if (!empty($item['tieu_de'])) {
+            $title = html_entity_decode($item['tieu_de']);
+          }
+
+          if (!empty($item['chuyen_muc'])) {
+            $cm_id = \Drupal::service('cttdt_migration.migration')->getTidByChuyenTrang($item['chuyen_muc']);
+          }
+
+          $body = [];
+          if (!empty($item['mo_ta'])) {
+            $body = [
+              'value' => html_entity_decode($item['mo_ta']),
+              'format' => 'full_html',
+            ];
+          }
+
+          if (!empty($item['created'])) {
+            $created = strtotime($item['created']);
+          }
+
+          if (!empty($item['tac_gia'])) {
+            $tac_gia = $item['tac_gia'];
+          }
+
+          $file_anh_library = [];
+          if (!empty($item['id_album_anh'])) {
+            foreach ($item['id_album_anh'] as $key => $file) {
+              $file_data = system_retrieve_file($file['link_anh'], 'public://2020-03/', FALSE, FILE_EXISTS_REPLACE);
+              if (!empty($file_data)) {
+                $anh = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($file_data);
+                $caption = '';
+                if (!empty($file['caption_image'])) {
+                  $caption = strlen($file['caption_image']) > 255 ? '' : $file['caption_image'];
+                }
+
+                $media = Media::create([
+                  'bundle'           => 'image',
+                  'uid'              => \Drupal::currentUser()->id(),
+                  'field_media_image' => [
+                    'target_id' => $anh->id(),
+                    'alt' => $caption,
+                    'title' => $caption
+                  ]
+                ]);
+                $media->save();
+                $file_anh_library[]['target_id'] = $media->id();
+              }
+            }
+          }
+
+          $node = Node::create(['type' => 'thu_vien_anh']);
+          $node->set('title', $title);
+          $node->set('body', $body);
+          $node->set('field_anh_chuyen_muc',  ['target_id' => $cm_id]);
+          if (!empty($file_anh_library)) {
+            $node->set('field_anh_lien_quan', $file_anh_library);
+          }
+          $node->set('field_tac_gia', $tac_gia);
+          $node->set('created', $created);
+          $node->setPublished(TRUE);
+          $node->enforceIsNew();
+          $node->save();
+        }
+        $sandbox['current']++;
+      }
+    }
+
+    \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+
+    if ($sandbox['total'] == 0) {
+      $sandbox['#finished'] = 1;
+    }
+    else {
+      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+    }
+  }
+}
+
+// Migration Crawl
+function cttdt_migration_update_8066(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $old_post = \Drupal::service('cttdt_migration.migration')->listCrawler('migrations/TinTuc_Crawler.json');
+    $sandbox['total'] = count($old_post);
+    $sandbox['current'] = 0;
+  }
+
+  $nodes_per_batch = 25;
+
+  $old_post = \Drupal::service('cttdt_migration.migration')->listCrawler('migrations/TinTuc_Crawler.json');
+  if (!empty($old_post)) {
+    $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+
+    if (!empty($old_post_slice)) {
+      foreach ($old_post_slice as $item) {
+        if (strlen($item['TieuDe']) <= 255) {
+          if (!empty($item['TieuDe'])) {
+            $title = html_entity_decode($item['TieuDe']);
+          }
+
+          if (!empty($item['ChuyenMuc'])) {
+            $cm_id = \Drupal::service('cttdt_migration.migration')->getTidByChuyenTrang($item['ChuyenMuc']);
+          }
+
+          $body = [];
+          if (!empty($item['MoTa'])) {
+            $body = [
+              'summary' => html_entity_decode($item['MoTa']),
+              'value' => '',
+              'format' => 'full_html',
+            ];
+          }
+
+          if (!empty($item['NgayXuatBan'])) {
+            $created = strtotime($item['NgayXuatBan']);
+          }
+
+          $remoteDocPath = $item['AnhDaiDien'];
+          $doc = system_retrieve_file($remoteDocPath, 'public://2020-03/', FALSE, FILE_EXISTS_REPLACE);
+          if (!empty($doc)) {
+            $image_dai_dien = \Drupal::service('cttdt_migration.migration')->drupal_add_existing_file($doc);
+          }
+          else {
+            $image_dai_dien = NULL;
+          }
+
+          $node = Node::create(['type' => 'article']);
+          $node->set('title', $title);
+          $node->set('body', $body);
+          $node->set('field_danh_muc',  ['target_id' => $cm_id]);
+          if (!empty($image_dai_dien)) {
+            $node->set('field_image', array(
+              'target_id' => $image_dai_dien->id()
+            ));
+          }
+          if (!empty($item['LienKet'])) {
+            $node->set('field_link_lien_ket', [
+              'uri' => $item['LienKet'],
+              'title' => ''
+            ]);
+          }
+          $node->set('created', $created);
+          $node->setPublished(TRUE);
+          $node->set('moderation_state', "published");
+          $node->enforceIsNew();
+          $node->save();
+        }
+        $sandbox['current']++;
+      }
+    }
+
+    \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+
+    if ($sandbox['total'] == 0) {
+      $sandbox['#finished'] = 1;
+    }
+    else {
+      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+    }
+  }
+}
+
+//Migration HoiDap
+function cttdt_migration_update_8096(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $old_post = \Drupal::service('cttdt_migration.migration')->listHoiDap('migrations/HoiDap.json');
+    $sandbox['total'] = count($old_post);
+    $sandbox['current'] = 0;
+  }
+
+  $nodes_per_batch = 25;
+
+  $old_post = \Drupal::service('cttdt_migration.migration')->listHoiDap('migrations/HoiDap.json');
+  if (!empty($old_post)) {
+    $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+
+    if (!empty($old_post_slice)) {
+      foreach ($old_post_slice as $item) {
+        if (strlen($item['TieuDe']) <= 255) {
+          if (!empty($item['TieuDe'])) {
+            $title = html_entity_decode($item['TieuDe']);
+          }
+
+          if (!empty($item['DonVi'])) {
+            $cm_id = \Drupal::service('cttdt_migration.migration')->getTidByChuyenTrang($item['DonVi']);
+          }
+
+          $body = [];
+          if (!empty($item['CauHoi'])) {
+            $body = [
+              'value' => html_entity_decode($item['CauHoi']),
+              'format' => 'full_html',
+            ];
+          }
+
+          if (!empty($item['ThoiGianTao'])) {
+            $created = strtotime($item['ThoiGianTao']);
+          }
+
+          if (!empty($item['ThoiGianXuatBan'])) {
+            $time_published = strtotime($item['ThoiGianXuatBan']);
+            $time_published = date("Y-m-d", $time_published);
+          }
+
+          if (!empty($item['ThoiGianPhanCong'])) {
+            $time_answer = strtotime($item['ThoiGianPhanCong']);
+            $time_answer = date("Y-m-d", $time_answer);
+          }
+
+          if (!empty($item['HoTen'])) {
+            $ho_ten = $item['HoTen'];
+          }
+
+          if (!empty($item['Email'])) {
+            $email = $item['Email'];
+          }
+
+          if (!empty($item['DienThoai'])) {
+            $phone = $item['DienThoai'];
+          }
+
+          if (!empty($item['DiaChi'])) {
+            $address = $item['DiaChi'];
+          }
+
+          $answer = [];
+          if (!empty($item['TraLoi'])) {
+            $answer = [
+              'value' => html_entity_decode($item['TraLoi']),
+              'format' => 'full_html',
+            ];
+          }
+
+          $node = Node::create(['type' => 'hoi_dap']);
+          $node->set('title', $title);
+          $node->set('body', $body);
+          $node->set('field_don_vi_xu_ly',  ['target_id' => $cm_id]);
+          $node->set('field_hoi_dap_email', $email);
+          $node->set('field_hoi_dap_ho_ten', $ho_ten);
+          $node->set('field_hoi_dap_dien_thoai', $phone);
+          $node->set('field_hoi_dap_dia_chi', $address);
+          $node->set('field_thoi_gian_gui', !empty($time_answer) ? $time_answer : $time_published);
+          $node->set('field_thoi_gian_tra_loi', !empty($time_answer) ? $time_answer : $time_published);
+          $node->set('field_thoi_gian_xuat_ban', $time_published);
+          $node->set('field_tra_loi', $answer);
+          $node->set('created', $created);
+          $node->setPublished(TRUE);
+          $node->set('moderation_state', "published");
+          $node->enforceIsNew();
+          $node->save();
+        }
+        $sandbox['current']++;
+      }
+    }
+
+    \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+
+    if ($sandbox['total'] == 0) {
+      $sandbox['#finished'] = 1;
+    }
+    else {
+      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+    }
+  }
+}
+
+// Delete nodes
+function cttdt_migration_update_8095(&$sandbox) {
+  $nodes = \Drupal::entityQuery("node")
+    ->condition('type', 'article')
+    ->condition('field_danh_muc', '', '=')
+    ->execute();
+
+  $storage_handler = \Drupal::entityTypeManager()->getStorage("node");
+
+  if (!empty($nodes)) {
+    foreach ($nodes as $key => $value) {
+      $node = $storage_handler->load($value);
+      $node->delete($node);
+    }
+  }
+}
+
+// Replace old domain
+function cttdt_migration_update_8100(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $old_post = \Drupal::service('cttdt_migration.migration')->getAllNodes();
+    $sandbox['total'] = count($old_post);
+    $sandbox['current'] = 0;
+  }
+
+  $nodes_per_batch = 25;
+
+  $old_post = \Drupal::service('cttdt_migration.migration')->getAllNodes();
+  if (!empty($old_post)) {
+    $old_post_slice = array_slice($old_post, $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+
+    if (!empty($old_post_slice)) {
+      foreach ($old_post_slice as $id) {
+        $node = Node::load($id);
+        if (isset($node->body)) {
+          $content = $node->get('body')->value;
+          $body = [];
+          if (!empty($content)) {
+            $content = str_replace('http://phutho.gov.vn/Upload', 'http://oldpt.phutho.gov.vn/Upload', $content);
+            $body = [
+              'value' => html_entity_decode($content),
+              'format' => 'full_html',
+            ];
+          }
+          $node->set('body', $body);
+          $node->save();
+        }
+        $sandbox['current']++;
+      }
+    }
+
+    \Drupal::messenger()->addMessage($sandbox['current'] . ' nodes processed.');
+
+    if ($sandbox['total'] == 0) {
+      $sandbox['#finished'] = 1;
+    }
+    else {
+      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+    }
+  }
+}

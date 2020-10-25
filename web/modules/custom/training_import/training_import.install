@@ -1,0 +1,71 @@
+<?php
+
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_schema().
+ */
+function training_import_schema() {
+  $schema['training_import_data'] = [
+    'description' => 'Stores the raw data from imported spreadsheet to import later by queue.',
+    'fields' => [
+      'rid' => [
+        'type'     => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'type' => [
+        'description' => 'The content type of the data to import.',
+        'type'     => 'varchar',
+        'length'   => 127,
+        'not null' => TRUE,
+        'default'  => '',
+      ],
+      'data' => [
+        'description' => 'The full blob of the data.',
+        'type' => 'blob',
+        'size' => 'big',
+      ],
+    ],
+    'primary key' => ['rid'],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function training_import_install() {
+  $rids = \Drupal::entityQuery('user_role')
+    ->condition('id', 'importer')
+    ->execute();
+  
+  if ($rids) {
+    \Drupal::logger('training_import')
+      ->warning('Role importer exists. Granting import permission.');
+    $role = Role::load(reset($rids));
+  }
+  else {
+    $role = Role::create([
+      'id'    => 'importer',
+      'label' => 'Importer'
+    ]);
+  }
+  $role->grantPermission('importer import data');
+  $role->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function training_import_uninstall() {
+  $rids = \Drupal::entityQuery('user_role')
+    ->condition('id', 'importer')
+    ->execute();
+
+  if ($rids) {
+    $importer = Role::load(reset($rids));
+    $importer->delete();
+  }
+}

@@ -1,0 +1,76 @@
+<?php
+
+/**
+ * @file
+ * Contains hoidap_client.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function hoidap_client_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the hoidap_client module.
+    case 'help.page.hoidap_client':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function hoidap_client_theme() {
+  return [
+    'hoi_dap_tra_loi' => [
+      'variables' => array('form' => NULL, 'data' => NULL),
+      'template' => 'hoi-dap-tra-loi',
+    ],
+    'hoi_dap_tra_loi_dn' => [
+      'variables' => array('form' => NULL, 'data' => NULL),
+      'template' => 'hoi-dap-tra-loi-dn',
+    ],
+    'cau_hoi_chua_tra_loi' => [
+      'variables' => array('data' => NULL),
+      'template' => 'cau-hoi-chua-tra-loi',
+    ],
+    'cau_hoi_chua_tra_loi_dn' => [
+      'variables' => array('data' => NULL),
+      'template' => 'cau-hoi-chua-tra-loi-dn',
+    ],
+    'ds_cau_hoi_hoi_dap' => [
+      'variables' => array('data' => NULL),
+      'template' => 'ds-cau-hoi-hoi-dap',
+    ],
+    'bao_cao_don_vi' => [
+      'variables' => array('data' => NULL),
+      'template' => 'bao-cao-by-dv',
+    ],
+    'ds_cau_hoi_hoi_dap_dn' => [
+      'variables' => array('data' => NULL),
+      'template' => 'ds-cau-hoi-hoi-dap-dn',
+    ],
+  ];
+}
+
+
+/**
+ * Implements add attachements
+ */
+function hoidap_client_page_attachments(array &$attachments) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name == 'hoidap_client.hoidap-traloi' || $route_name == 'hoidap_client.cau-hoi-chua-tra-loi'
+    || $route_name == 'hoidap_client.danh-sach-cau-hoi' || $route_name == 'hoidap_client.bao-cao-don-vi'
+    || $route_name == 'hoidap_client.danh-sach-cau-hoi-dn' || $route_name == 'hoidap_client.hoidap-traloi-dn'
+    || $route_name == 'hoidap_client.cau-hoi-chua-tra-loi-dn') {
+    $attachments['#attached']['library']['hoidap-data'] = 'hoidap_client/custom-library';
+  }
+
+  return;
+}

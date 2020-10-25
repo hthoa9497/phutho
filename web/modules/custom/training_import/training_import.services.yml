@@ -1,0 +1,13 @@
+services:
+  training_import.code_guarder:
+    class: Drupal\training_import\EventSubscriber\CodeGuarder
+    tags:
+      - { name: 'event_subscriber' }
+
+  training_import.importer:
+    class: Drupal\training_import\Controller\TrainingImportController
+    arguments:
+      - '@database'
+      - '@stream_wrapper_manager'
+      - '@logger.factory'
+      - '@queue'

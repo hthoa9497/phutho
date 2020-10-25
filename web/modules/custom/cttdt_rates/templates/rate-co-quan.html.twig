@@ -1,0 +1,81 @@
+<div class="rate-co-quan-ban-nghanh mt-3">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="head-danh-muc">{{ 'Đánh giá sự phục vụ của cơ quan hành chính nhà nước'|t }}</h2>
+    </div>
+    <div class="col-12">
+      <div class="co-quan row">
+        {% if data is not empty %}
+          {% for item in data %}
+            <div class="co-quan__item col-12 col-sm-6 col-md-4 p-2">
+              <div class="co-quan__name font-weight-bold">
+                {{ loop.index }}. <span class="term-name">{{ item['term_name'] }}</span>
+              </div>
+              <div class="co-quan__danh-gia co-quan__danh-gia-{{ item['term_id'] }}">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="danhGia" id="muc-do-danh-gia-1" value="0">
+                  <label class="form-check-label" for="muc-do-danh-gia-1">
+                    {{ 'Rất hài lòng'|t }}
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="danhGia" id="muc-do-danh-gia-2" value="1">
+                  <label class="form-check-label" for="muc-do-danh-gia-2">
+                    {{ 'Hài lòng'|t }}
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="danhGia" id="muc-do-danh-gia-3" value="2">
+                  <label class="form-check-label" for="muc-do-danh-gia-3">
+                    {{ 'Chấp nhận được'|t }}
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="danhGia" id="muc-do-danh-gia-4" value="3">
+                  <label class="form-check-label" for="muc-do-danh-gia-4">
+                    {{ 'Không hài lòng'|t }}
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="danhGia" id="muc-do-danh-gia-5" value="4">
+                  <label class="form-check-label" for="muc-do-danh-gia-5">
+                    {{ 'Không thể chấp nhận được'|t }}
+                  </label>
+                </div>
+              </div>
+              <div class="co-quan__control mt-2">
+                <button class="btn--y-kien btn-primary" value="{{ item['term_id'] }}">{{ 'Ý kiến'|t }}</button>
+                <button class="btn--ket-qua btn-primary"
+                        value="{{ item['term_id'] }}"
+                        data-toggle="modal"
+                        data-target="#ket-qua-rate-modal-{{ item['term_id'] }}">{{ 'Kết quả'|t }}</button>
+              </div>
+
+              {#Rate Co Quan Modal#}
+              <div class="modal fade" id="ket-qua-rate-modal-{{ item['term_id'] }}" tabindex="-1" role="dialog" aria-labelledby="ketQuaRateTitle{{ item['term_id'] }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header text-align-center">
+                      <div class="row">
+                        <h5 class="modal-title col-12">{{ 'ĐÁNH GIÁ CHẤT LƯỢNG PHỤC VỤ CỦA TỪNG CƠ QUAN CHUYÊN MÔN'|t }}</h5>
+                        <div class="col-12">
+                          <b>{{ 'Kết quả bình chọn'|t }}</b>
+                        </div>
+                        <div class="col-12">
+                          <span>{{ item['term_name'] }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-body">
+                      <canvas id="bar-chart-rate-{{ item['term_id'] }}"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
