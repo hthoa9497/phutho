@@ -1,0 +1,270 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+{%
+  set classes = [
+  'col-12 my-2 block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
+<div{{ attributes.addClass(classes) }}>
+  <ul class="nav nav-pills nav-cttdt-tab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="pill" href="#so-ban-nganh">{{ 'Sở, Ban, Ngành'|t }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#huyen-thanh-thi">{{ 'Huyện, Thành, Thị'|t }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#co-quan-nganh-doc">{{ 'Cơ quan ngành dọc'|t }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#hoi-doan-the">{{ 'Hội đoàn thể'|t }}</a>
+    </li>
+  </ul>
+
+  {#<!-- Tab panes -->#}
+  <div class="tab-content tab-content__cttdt">
+    <div id="so-ban-nganh" class="container tab-pane active">
+      <div class="row">
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://socongthuong.phutho.gov.vn/">Sở Công thương</a></li>
+            <li><a target="_blank" href="http://sogtvt.phutho.gov.vn/">Sở Giao thông vận tải</a></li>
+            <li><a target="_blank" href="http://phutho.edu.vn/">Sở Giáo dục và Đào tạo</a></li>
+            <li><a target="_blank" href="http://sokhoahoccongnghe.phutho.gov.vn/">Sở Khoa học và Công nghệ</a></li>
+            <li><a target="_blank" href="http://dpi.phutho.gov.vn/">Sở Kế hoạch và Đầu tư</a></li>
+            <li><a target="_blank" href="http://soldtbxh.phutho.gov.vn/">Sở Lao động, Thương binh và Xã hội</a></li>
+            <li><a target="_blank" href="http://www.phuthodfa.gov.vn/">Sở Ngoại vụ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://sonoivu.phutho.gov.vn/">Sở Nội vụ</a></li>
+            <li><a target="_blank" href="http://snn.phutho.gov.vn/">Sở Nông nghiệp và Phát triển nông thôn</a></li>
+            <li><a target="_blank" href="http://sotaichinh.phutho.gov.vn/">Sở Tài chính</a></li>
+            <li><a target="_blank" href="http://tnmtphutho.gov.vn/">Sở Tài nguyên và Môi trường</a></li>
+            <li><a target="_blank" href="http://stttt.phutho.gov.vn/">Sở Thông tin và Truyền thông</a></li>
+            <li><a target="_blank" href="http://sotuphap.phutho.gov.vn/">Sở Tư pháp</a></li>
+            <li><a target="_blank" href="http://svhttdl.phutho.gov.vn/">Sở Văn hóa, Thể thao và Du lịch</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://soxaydung.phutho.gov.vn/">Sở Xây dựng</a></li>
+            <li><a target="_blank" href="http://soyte.phutho.gov.vn/">Sở Y tế</a></li>
+            <li><a target="_blank" href="http://www.phutho.gov.vn">Văn phòng UBND tỉnh</a></li>
+            <li><a target="_blank" href="http://thanhtra.phutho.gov.vn/">Thanh tra tỉnh</a></li>
+            <li><a target="_blank" href="http://phuthotv.vn/">Đài Phát thanh và Truyền hình tỉnh</a></li>
+            <li><a target="_blank" href="http://www.phutho.gov.vn">Ban Dân tộc tỉnh</a></li>
+            <li><a target="_blank" href="http://bqlkcn.phutho.gov.vn/">Ban Quản lý các khu công nghiệp tỉnh</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://socongthuong.phutho.gov.vn/">Sở Công thương</a></li>
+            <li><a target="_blank" href="http://sogtvt.phutho.gov.vn/">Sở Giao thông vận tải</a></li>
+            <li><a target="_blank" href="http://phutho.edu.vn/">Sở Giáo dục và Đào tạo</a></li>
+            <li><a target="_blank" href="http://sokhoahoccongnghe.phutho.gov.vn/">Sở Khoa học và Công nghệ</a></li>
+            <li><a target="_blank" href="http://dpi.phutho.gov.vn/">Sở Kế hoạch và Đầu tư</a></li>
+            <li><a target="_blank" href="http://soldtbxh.phutho.gov.vn/">Sở Lao động, Thương binh và Xã hội</a></li>
+            <li><a target="_blank" href="http://www.phuthodfa.gov.vn/">Sở Ngoại vụ</a></li>
+            <li><a target="_blank" href="http://sonoivu.phutho.gov.vn/">Sở Nội vụ</a></li>
+            <li><a target="_blank" href="http://snn.phutho.gov.vn/">Sở Nông nghiệp và Phát triển nông thôn</a></li>
+            <li><a target="_blank" href="http://sotaichinh.phutho.gov.vn/">Sở Tài chính</a></li>
+            <li><a target="_blank" href="http://tnmtphutho.gov.vn/">Sở Tài nguyên và Môi trường</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://stttt.phutho.gov.vn/">Sở Thông tin và Truyền thông</a></li>
+            <li><a target="_blank" href="http://sotuphap.phutho.gov.vn/">Sở Tư pháp</a></li>
+            <li><a target="_blank" href="http://svhttdl.phutho.gov.vn/">Sở Văn hóa, Thể thao và Du lịch</a></li>
+            <li><a target="_blank" href="http://soxaydung.phutho.gov.vn/">Sở Xây dựng</a></li>
+            <li><a target="_blank" href="http://soyte.phutho.gov.vn/">Sở Y tế</a></li>
+            <li><a target="_blank" href="http://www.phutho.gov.vn/">Văn phòng UBND tỉnh</a></li>
+            <li><a target="_blank" href="http://thanhtra.phutho.gov.vn/">Thanh tra tỉnh</a></li>
+            <li><a target="_blank" href="http://phuthotv.vn/">Đài Phát thanh và Truyền hình tỉnh</a></li>
+            <li><a target="_blank" href="http://www.phutho.gov.vn">Ban Dân tộc tỉnh</a></li>
+            <li><a target="_blank" href="http://bqlkcn.phutho.gov.vn/">Ban Quản lý các khu công nghiệp tỉnh</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="huyen-thanh-thi" class="container tab-pane fade">
+      <div class="row">
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://www.viettri.gov.vn/">Thành phố Việt Trì</a></li>
+            <li><a target="_blank" href="http://thixa.phutho.gov.vn/">Thị xã Phú Thọ</a></li>
+            <li><a target="_blank" href="http://camkhe.phutho.gov.vn">Huyện Cẩm Khê</a></li>
+            <li><a target="_blank" href="http://doanhung.phutho.gov.vn/">Huyện Đoan Hùng</a></li>
+            <li><a target="_blank" href="http://hahoa.phutho.gov.vn/">Huyện Hạ Hòa</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://lamthao.phutho.gov.vn/">Huyện Lâm Thao</a></li>
+            <li><a target="_blank" href="http://tamnong.phutho.gov.vn">Huyện Tam Nông</a></li>
+            <li><a target="_blank" href="http://thanhba.phutho.gov.vn/">Huyện Thanh Ba</a></li>
+            <li><a target="_blank" href="http://thanhson.phutho.gov.vn/">Huyện Thanh Sơn</a></li>
+            <li><a target="_blank" href="http://thanhthuy.phutho.gov.vn/">Huyện Thanh Thủy</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link d-none d-md-block">
+            <li><a target="_blank" href="http://tanson.phutho.gov.vn/">Huyện Tân Sơn</a></li>
+            <li><a target="_blank" href="http://phuninh.phutho.gov.vn/">Huyện Phù Ninh</a></li>
+            <li><a target="_blank" href="http://yenlap.phutho.gov.vn/">Huyện Yên Lập</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://www.viettri.gov.vn/">Thành phố Việt Trì</a></li>
+            <li><a target="_blank" href="http://thixa.phutho.gov.vn/">Thị xã Phú Thọ</a></li>
+            <li><a target="_blank" href="http://camkhe.phutho.gov.vn">Huyện Cẩm Khê</a></li>
+            <li><a target="_blank" href="http://doanhung.phutho.gov.vn/">Huyện Đoan Hùng</a></li>
+            <li><a target="_blank" href="http://hahoa.phutho.gov.vn/">Huyện Hạ Hòa</a></li>
+            <li><a target="_blank" href="http://lamthao.phutho.gov.vn/">Huyện Lâm Thao</a></li>
+            <li><a target="_blank" href="http://tamnong.phutho.gov.vn">Huyện Tam Nông</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://thanhba.phutho.gov.vn/">Huyện Thanh Ba</a></li>
+            <li><a target="_blank" href="http://thanhson.phutho.gov.vn/">Huyện Thanh Sơn</a></li>
+            <li><a target="_blank" href="http://thanhthuy.phutho.gov.vn/">Huyện Thanh Thủy</a></li>
+            <li><a target="_blank" href="http://tanson.phutho.gov.vn/">Huyện Tân Sơn</a></li>
+            <li><a target="_blank" href="http://phuninh.phutho.gov.vn/">Huyện Phù Ninh</a></li>
+            <li><a target="_blank" href="http://yenlap.phutho.gov.vn/">Huyện Yên Lập</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="co-quan-nganh-doc" class="container tab-pane fade">
+      <div class="row">
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://phutho.bhxh.gov.vn/">Bảo hiểm xã hội tỉnh</a></li>
+            <li><a href="">Bộ Chỉ huy Quân sự tỉnh</a></li>
+            <li><a target="_blank" href="http://congantinh.phutho.gov.vn/">Công an tỉnh</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://thongkephutho.vn/">Cục Thống kê</a></li>
+            <li><a target="_blank" href="http://gdt.gov.vn/wps/portal">Cục Thuế tỉnh</a></li>
+            <li><a href="">Ngân hàng Nhà nước chi nhánh tỉnh Phú Thọ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a href="">Kho bạc Nhà nước tỉnh</a></li>
+            <li><a href="">Ngân hàng Chính sách xã hội tỉnh</a></li>
+            <li><a href="">Chi cục Hải quan Phú Thọ</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://phutho.bhxh.gov.vn/">Bảo hiểm xã hội tỉnh</a></li>
+            <li><a href="">Bộ Chỉ huy Quân sự tỉnh</a></li>
+            <li><a target="_blank" href="http://congantinh.phutho.gov.vn/">Công an tỉnh</a></li>
+            <li><a target="_blank" href="http://thongkephutho.vn/">Cục Thống kê</a></li>
+            <li><a target="_blank" href="http://gdt.gov.vn/wps/portal">Cục Thuế tỉnh</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a href="">Ngân hàng Nhà nước chi nhánh tỉnh Phú Thọ</a></li>
+            <li><a href="">Kho bạc Nhà nước tỉnh</a></li>
+            <li><a href="">Ngân hàng Chính sách xã hội tỉnh</a></li>
+            <li><a href="">Chi cục Hải quan Phú Thọ</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="hoi-doan-the" class="container tab-pane fade">
+      <div class="row">
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://congdoandatto.org.vn/">Liên đoàn Lao động tỉnh</a></li>
+            <li><a target="_blank" href="http://tinhdoanphutho.vn/">Tỉnh đoàn Thanh niên</a></li>
+            <li><a target="_blank" href="http://phunu.phutho.gov.vn/">Hội Liên hiệp Phụ nữ tỉnh</a></li>
+            <li><a href="">Hội Cựu chiến binh tỉnh</a></li>
+            <li><a target="_blank" href="http://hoinongdan.phutho.gov.vn/">Hội Nông dân tỉnh</a></li>
+            <li><a href="">Hội Người cao tuổi tỉnh</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://chuthapdophutho.org.vn/">Hội Chữ thập đỏ tỉnh</a></li>
+            <li><a target="_blank" href="http://vannghedatto.vn/">Hội Liên hiệp Văn học nghệ thuật tỉnh</a></li>
+            <li><a target="_blank" href="http://hoikhuyenhoc.phutho.gov.vn/">Hội Khuyến học tỉnh</a></li>
+            <li><a href="">Hội Người mù tỉnh</a></li>
+            <li><a href="">Liên hiệp Các tổ chức Hữu nghị tỉnh</a></li>
+            <li><a target="_blank" href="http://trithucdatto.vn/">Liên hiệp các Hội Khoa học và Kỹ thuật tỉnh</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 d-none d-md-block">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://lmhtx.phutho.gov.vn/">Liên minh Hợp tác xã tỉnh</a></li>
+            <li><a href="">Hội Bảo trợ người tàn tật và trẻ em mồ côi tỉnh</a></li>
+            <li><a target="_blank" href="http://hoinannhandacamphutho.com/">Hội Nạn nhân chất độc da cam/dioxin tỉnh</a></li>
+            <li><a href="">Hội Luật gia tỉnh</a></li>
+            <li><a href="">Hiệp hội Doanh nghiệp vừa và nhỏ tỉnh</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a target="_blank" href="http://congdoandatto.org.vn/">Liên đoàn Lao động tỉnh</a></li>
+            <li><a target="_blank" href="http://tinhdoanphutho.vn/">Tỉnh đoàn Thanh niên</a></li>
+            <li><a target="_blank" href="http://phunu.phutho.gov.vn/">Hội Liên hiệp Phụ nữ tỉnh</a></li>
+            <li><a href="">Hội Cựu chiến binh tỉnh</a></li>
+            <li><a target="_blank" href="http://hoinongdan.phutho.gov.vn/">Hội Nông dân tỉnh</a></li>
+            <li><a href="">Hội Người cao tuổi tỉnh</a></li>
+            <li><a target="_blank" href="http://chuthapdophutho.org.vn/">Hội Chữ thập đỏ tỉnh</a></li>
+            <li><a target="_blank" href="http://vannghedatto.vn/">Hội Liên hiệp Văn học nghệ thuật tỉnh</a></li>
+            <li><a target="_blank" href="http://hoikhuyenhoc.phutho.gov.vn/">Hội Khuyến học tỉnh</a></li>
+          </ul>
+        </div>
+        <div class="col-6 d-block d-md-none">
+          <ul class="list-link">
+            <li><a href="">Hội Người mù tỉnh</a></li>
+            <li><a href="">Liên hiệp Các tổ chức Hữu nghị tỉnh</a></li>
+            <li><a target="_blank" href="http://trithucdatto.vn/">Liên hiệp các Hội Khoa học và Kỹ thuật tỉnh</a></li>
+            <li><a target="_blank" href="http://lmhtx.phutho.gov.vn/">Liên minh Hợp tác xã tỉnh</a></li>
+            <li><a href="">Hội Bảo trợ người tàn tật và trẻ em mồ côi tỉnh</a></li>
+            <li><a target="_blank" href="http://hoinannhandacamphutho.com/">Hội Nạn nhân chất độc da cam/dioxin tỉnh</a></li>
+            <li><a href="">Hội Luật gia tỉnh</a></li>
+            <li><a href="">Hiệp hội Doanh nghiệp vừa và nhỏ tỉnh</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

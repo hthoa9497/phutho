@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a branding block.
+ *
+ * Each branding element variable (logo, name, slogan) is only available if
+ * enabled in the block configuration.
+ *
+ * Available variables:
+ * - site_logo: Logo for site as defined in Appearance or theme settings.
+ * - site_name: Name for site as defined in Site information settings.
+ * - site_slogan: Slogan for site as defined in Site information settings.
+ *
+ * @ingroup themeable
+ */
+#}
+{% block content %}
+  <div class="col-12 hero-text">
+    <div class="row">
+      <div class="col-12 col-sm-2 col-md-2 col-lg-3 d-none d-md-block">
+        {% if site_logo %}
+          <div class="hero-banner__logo">
+            <img src="{{ site_logo }}" alt="{{ 'Home'|t }}" />
+          </div>
+        {% endif %}
+      </div>
+      <div class="col-2 mobile-toggle-control d-md-none">
+        <button class="nav-main-menu navbar-toggler" type="button">
+          <span class="navbar-toggler-icon">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="col-10 col-sm-10 col-md-10 col-lg-9 m-pl-0">
+        <div class="hero-banner__site-name">
+          <h1 style="float: inside" class="c-red">{{ 'Electronic Information Portal of Phu Tho Province'|t }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

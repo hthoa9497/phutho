@@ -1,0 +1,80 @@
+{#
+/**
+ * @file
+ * Theme override to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ */
+#}
+{% if title %}
+  <h3>{{ title }}</h3>
+{% endif %}
+
+<div class="views-row d-none d-md-block">
+  {% for row in rows %}
+    {%
+      set row_classes = [
+      default_row_class ? 'views-row',
+    ]
+    %}
+
+    {% if loop.index == 1 %}
+      <div class="video__highlight video__item">
+        {% if file_url(row.content['#row']._entity.field_video.entity.uri.value) != '/' %}
+          <video width="100%" height="auto" poster="{{ file_url(row.content['#row']._entity.field_video_anh_dai_dien.entity.uri.value) }}" controls>
+            <source src="{{ file_url(row.content['#row']._entity.field_video.entity.uri.value) }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        {% endif %}
+        {% if row.content['#row']._entity.field_link_video_old.value is not empty %}
+          <video width="100%" height="auto" poster="{{ file_url(row.content['#row']._entity.field_video_anh_dai_dien.entity.uri.value) }}" controls>
+            <source src="{{ 'http://oldpt.phutho.gov.vn' ~ row.content['#row']._entity.field_link_video_old.value }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        {% endif %}
+        <a class="video__item__title text-align-left" href="{{ path('entity.node.canonical', {'node': row.content['#row']._entity.nid.value}) }}">{{ row.content['#row']._entity.title.value }}</a>
+      </div>
+    {% else %}
+      <div class="video__item">
+        <a class="video__item__title text-align-left" href="{{ path('entity.node.canonical', {'node': row.content['#row']._entity.nid.value}) }}">{{ row.content['#row']._entity.title.value }}</a>
+      </div>
+    {% endif %}
+  {% endfor %}
+  <div class="view-footer text-align-right">
+    <a href="{{ path('entity.node.canonical', {'node': rows[0].content['#row']._entity.nid.value}) }}">Xem thêm</a>
+  </div>
+</div>
+<div class="views-row d-block d-md-none px-3 views-video-mobile">
+  <div class="video-library-mobile">
+  {% for row in rows %}
+    <div class="video__highlight video__item">
+      {% if file_url(row.content['#row']._entity.field_video.entity.uri.value) != '/' %}
+        <video width="100%" height="230px" poster="{{ file_url(row.content['#row']._entity.field_video_anh_dai_dien.entity.uri.value) }}" controls>
+          <source src="{{ file_url(row.content['#row']._entity.field_video.entity.uri.value) }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      {% endif %}
+      {% if row.content['#row']._entity.field_link_video_old.value is not empty %}
+        <video width="100%" height="230px" poster="{{ file_url(row.content['#row']._entity.field_video_anh_dai_dien.entity.uri.value) }}" controls>
+          <source src="{{ 'http://phutho.gov.vn' ~ row.content['#row']._entity.field_link_video_old.value }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      {% endif %}
+      <a class="video__item__title text-align-left" href="{{ path('entity.node.canonical', {'node': row.content['#row']._entity.nid.value}) }}">{{ row.content['#row']._entity.title.value }}</a>
+    </div>
+  {% endfor %}
+  </div>
+  <div class="view-footer text-align-right">
+    <a href="{{ path('entity.node.canonical', {'node': rows[0].content['#row']._entity.nid.value}) }}">Xem thêm</a>
+  </div>
+</div>
+

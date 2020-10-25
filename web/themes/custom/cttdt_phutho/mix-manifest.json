@@ -1,0 +1,10 @@
+{
+    "/js/bootstrap.js": "/js/bootstrap.js",
+    "/js/bootstrap.bundle.js": "/js/bootstrap.bundle.js",
+    "/css/style.css": "/css/style.css",
+    "/js/components/Dashboard.js": "/js/components/Dashboard.js",
+    "/js/components/Header.js": "/js/components/Header.js",
+    "/js/components/HeroBanner.js": "/js/components/HeroBanner.js",
+    "/js/components/QuestionSurvey.js": "/js/components/QuestionSurvey.js",
+    "/js/components/RateCoQuan.js": "/js/components/RateCoQuan.js"
+}

@@ -1,0 +1,24 @@
+/**
+* Get map value
+*/
+@function map($map, $key) {
+  @if map-has-key($map, $key) {
+    @return map-get($map, $key);
+  }
+  @warn "Unknown `#{$key}` in `#{$map}`.";
+  @return null;
+}
+
+/**
+* Get pixels to rem
+*/
+$browser-context: 16; // Default
+@function rem($pixels, $browser-context: 16) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+  @if (unitless($browser-context)) {
+    $browser-context: $browser-context * 1px;
+  }
+  @return $pixels / $browser-context * 1rem;
+}

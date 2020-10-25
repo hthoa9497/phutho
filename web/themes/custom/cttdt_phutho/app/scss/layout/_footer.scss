@@ -1,0 +1,119 @@
+.footer {
+  font-size: rem(13px);
+  background-color: $c-white;
+  .footer-group-bottom {
+    @include media-breakpoint-down(sm) {
+      background-image: url("/themes/custom/cttdt_phutho/images/bg-trongdong.png");
+      background-color: $c-menu;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      padding-bottom: rem(20px);
+    }
+  }
+  @include media-breakpoint-up(md) {
+    background-color: $c-menu;
+    background-image: url("/themes/custom/cttdt_phutho/images/bg_footer.jpg");
+    background-size: 100% 100%;
+    padding-bottom: rem(20px);
+  }
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  .copyright h4 {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    @include media-breakpoint-down(sm) {
+      text-align: justify;
+      letter-spacing: -1px;
+      font-size: 16px;
+      line-height: 26px;
+    }
+  }
+  &__menus {
+    display: flex;
+    padding: rem(10px);
+    color: $c-white;
+  }
+
+  &__bottom {
+    line-height: rem(18px);
+    color: $c-white;
+    font-weight: 500;
+    p {
+      margin-bottom: rem(2px);
+    }
+  }
+  position: relative;
+  #block-visitors {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 15px;
+    font-weight: 500;
+    color: $c-white;
+    ul li {
+      list-style: none;
+    }
+    display: none;
+    @include media-breakpoint-up(md) {
+      display: block;
+    }
+  }
+  .custom-space {
+    @include media-breakpoint-up(md) {
+      margin-left: 38% !important;
+    }
+  }
+
+  &__top {
+    padding-top: 15px;
+    @include media-breakpoint-down(sm) {
+      text-align: left;
+      background-color: $c-white;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      position: relative;
+      &:after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        content: "";
+        height: 3px;
+        width: 100%;
+        background: linear-gradient(to right, $c-box-blue, $c-light-blue);
+      }
+    }
+    ul {
+      border-bottom: 3px solid $c-white;
+      padding-bottom: 2px;
+      display: inline-block;
+      li {
+        display: inline-block;
+        border-right: 2px solid $c-white;
+        @include media-breakpoint-down(sm) {
+          border-color: $c-dark-blue;
+        }
+        padding: 0 10px;
+        &:first-child {
+          padding-left: 0;
+        }
+        &:last-child {
+          border-right: 0;
+        }
+        a {
+          color: $c-white;
+          font-weight: bold;
+          text-transform: uppercase;
+          @include media-breakpoint-down(sm) {
+            color: $c-dark-blue;
+            text-transform: capitalize;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+}

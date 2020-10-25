@@ -1,0 +1,49 @@
+<header{{ navbar_attributes.addClass(navbar_classes) }} id="navbar" role="banner">
+  {% if not navbar_attributes.hasClass(container) %}
+  <div class="hero-top">
+    {{ drupal_entity('block', 'banner_header_top') }}
+    <div class="{{ container }}">
+      {% endif %}
+      {% if page.hero_banner %}
+        <div class="hero-banner">
+          {{ page.hero_banner|without('banner_header_top') }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="main-menu">
+    <div class="navbar-header">
+      <div class="{{ container }}">
+        {{ page.navigation }}
+      </div>
+    </div>
+    {% if not navbar_attributes.hasClass(container) %}
+    <div class="m-nav-header d-sm-block d-md-none">
+      <div class="{{ container }}">
+        <div class="row">
+          <div class="col-12">
+            <ul class="m-main-menu">
+              <li>
+                <a href="{{ path('<front>') }}"><i class="fa fa-home"></i></a>
+              </li>
+              <li>
+                <a href="{{ path('entity.taxonomy_term.canonical', {'taxonomy_term': 12}) }}">{{ 'Tin Tức - Sự Kiện'|t }}</a>
+              </li>
+              <li>
+                <a href="https://dichvucong.phutho.gov.vn/">{{ 'Dịch vụ công trực tuyến'|t }}</a>
+              </li>
+            </ul>
+            <div class="m-danh-muc">{{ 'Danh mục'|t }}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            {{ page.navigation_mobile }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</header>

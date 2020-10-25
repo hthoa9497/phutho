@@ -1,0 +1,35 @@
+<header class="main-header">
+  <div class="row">
+    <div class="col-md-2 text-center no-padding">
+      <div class="logo-dashboard">
+        <a href="" class="logo">
+          <img src="{{ base_path ~ directory }}/screenshot.png" alt="">
+        </a>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="user-logged-info pull-right">
+        <div class="user-name">
+          {% if user_picture is not empty %}
+            <img src="{{ user_picture }}" alt="">
+          {% else %}
+            <img src="{{ base_path ~ directory }}/images/user2-160x160.jpg" alt="">
+          {% endif %}
+          <span class="name">{{ username }}</span>
+        </div>
+        <ul class="profile-control">
+          <li>
+            <a href="{{ path('entity.user.canonical', {'user': user.id}) }}">{{ 'Thông tin user'|t }}</a>
+          </li>
+          <li>
+            <a href="{{ path('entity.user.edit_form', {'user': user.id}) }}">{{ 'Sửa thông tin user'|t }}</a>
+          </li>
+          <li>
+            <a href="{{ path('user.logout') }}">{{ 'Đăng xuất'|t }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</header>

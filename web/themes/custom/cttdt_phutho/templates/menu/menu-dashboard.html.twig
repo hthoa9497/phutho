@@ -1,0 +1,217 @@
+<ul class="sidebar-menu menu-dashboard">
+  {% if is_login %}
+    {% if is_truong_bbt == 0 and is_vpub == 0 %}
+      <li>
+        <a href="{{ path('node.add', {'node_type': 'article'}) }}"><i class="fa fa-paint-brush"></i> {{ 'Tạo bài viết'|t }}</a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_cua_toi') }}"><i class="fa fa-user-plus"></i> {{ 'Tin nháp'|t }}</a>
+      </li>
+      {% if is_btv or is_qtv %}
+        <li>
+          <a href="{{ path('view.list_post_by_user_and_category.page_tra_lai') }}"><i class="fa fa-undo"></i> {{ 'Tin trả lại'|t }}</a>
+        </li>
+        <li>
+          <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet_pv') }}">
+            <i class="fa fa-hourglass-half"></i> {{ 'Tin chờ phê duyệt'|t }}
+          </a>
+        </li>
+        <li>
+          <a href="{{ path('view.list_post_by_user_and_category.page_tin_da_duyet_pv') }}">
+            <i class="fa fa-hourglass-end"></i> {{ 'Tin đã phê duyệt'|t }}
+          </a>
+        </li>
+        <li>
+          <a href="{{ path('view.nhuan_but.page_nhuan_but_pv_btv') }}"><i class="fa fa-bar-chart"></i> {{ 'Thống kê'|t }}</a>
+        </li>
+      {% endif %}
+    {% endif %}
+    {% if is_lanh_dao_phong_cong_ttdt %}
+      <li>
+        <a href="{{ path('cttdt_dashboard.tin-cho-bt-moi') }}">
+          <i class="fa fa-newspaper-o"></i> {{ 'Tin mới'|t }}
+          <span class="badge badge--primary pull-right">{{ total.bt_tin_moi }}</span></a>
+      </li>
+      <li>
+        <a href="{{ path('cttdt_dashboard.tin-cho-bt-do') }}">
+          <i class="fa fa-spinner"></i> {{ 'Tin biên tập dở'|t }}
+          <span class="badge badge--primary pull-right">{{ total.bt_tin_do }}</span></a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tra_lai_pv') }}">
+          <i class="fa fa-undo"></i> {{ 'Tin trả lại phóng viên'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tra_lai }}</span></a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_bt2') }}">
+          <i class="fa fa-hourglass-half"></i> {{ 'BT2 chờ phê duyệt'|t }}
+          <span class="badge badge--primary pull-right">{{ total.cho_bien_tap_2 }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet') }}">
+          <i class="fa fa-hourglass-end"></i> {{ 'BT2 đã phê duyệt'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tin_cho_duyet }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tra_lai_bt1') }}">
+          <i class="fa fa-undo"></i> {{ 'BT2 trả biên tập lại'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tra_lai_bt1 }}</span></a>
+      </li>
+    {% endif %}
+    {% if is_pgd_tt_phu_trach_cong_ttdt %}
+      <li>
+        <a href="{{ path('cttdt_dashboard.tin-cho-bt2-moi') }}">
+          <i class="fa fa-newspaper-o"></i> {{ 'Tin mới'|t }}
+          <span class="badge badge--primary pull-right">{{ total.bt2_tin_moi }}</span></a>
+      </li>
+      <li>
+        <a href="{{ path('cttdt_dashboard.tin-cho-bt2-do') }}">
+          <i class="fa fa-spinner"></i> {{ 'Tin biên tập dở'|t }}
+          <span class="badge badge--primary pull-right">{{ total.bt2_tin_do }}</span></a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tra_lai_ldp') }}">
+          <i class="fa fa-undo"></i> {{ 'Tin trả lại LĐP'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tra_lai_bt1 }}</span></a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet') }}">
+          <i class="fa fa-hourglass-half"></i> {{ 'TTB chờ phê duyệt'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tin_cho_duyet }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_da_duyet') }}">
+          <i class="fa fa-hourglass-end"></i> {{ 'TTB đã phê duyệt'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tin_da_duyet }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tra_lai_bt2') }}">
+          <i class="fa fa-undo"></i> {{ 'TTB trả biên tập lại'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tra_lai_bt2 }}</span></a>
+      </li>
+    {% endif %}
+    {% if is_truong_bbt %}
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet') }}">
+          <i class="fa fa-hourglass-half"></i> {{ 'Tin chờ duyệt'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tin_cho_duyet }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_da_duyet') }}">
+          <i class="fa fa-hourglass-end"></i> {{ 'Tin đã duyệt'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tin_da_duyet }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_da_xuat_ban') }}">
+          <i class="fa fa-hourglass"></i> {{ 'Tin đã xuất bản'|t }}
+          <span class="badge badge--primary pull-right">{{ total.xuat_ban }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tra_lai_pgd') }}">
+          <i class="fa fa-undo"></i> {{ 'Tin trả lại PGĐ'|t }}
+          <span class="badge badge--primary pull-right">{{ total.tra_lai_bt2 }}</span>
+        </a>
+      </li>
+    {% endif %}
+    {% if is_qtv or is_pgd_tt_phu_trach_cong_ttdt or is_truong_bbt %}
+      <li class="sub-menu">
+        <i class="fa fa-question-circle-o"></i> {{ 'Hỏi đáp công dân'|t }}
+        <ul>
+          <li>
+            <a href="{{ path('view.danh_sach_cau_hoi_dap.page_ds_hoi_dap') }}">
+              {{ 'Danh sách câu hỏi hỏi đáp'|t }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('view.danh_sach_cau_hoi_dap.page_chua_tra_loi') }}">
+              {{ 'Câu hỏi chưa trả lời'|t }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('cttdt_hoi_dap.ds-cham-tra-loi') }}">
+              {{ 'Câu hỏi chậm trả lời'|t }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('view.danh_sach_cau_hoi_dap.page_chua_phan_cong') }}">
+              {{ 'Câu hỏi chưa phân công'|t }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('cttdt_hoi_dap.bao-cao-don-vi') }}">
+              {{ 'Báo cáo câu hỏi hỏi đáp'|t }}
+            </a>
+          </li>
+        </ul>
+      </li>
+    {% endif %}
+    {% if is_truong_bbt %}
+      <li>
+        <a href="{{ path('cttdt_dashboard.tk-tp') }}">
+          <i class="fa fa-line-chart"></i> {{ 'Thống kê tác phẩm'|t }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('cttdt_dashboard.tk-nb') }}">
+          <i class="fa fa-line-chart"></i> {{ 'Thống kê nhuận bút'|t }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('cttdt_dashboard.tk-nb-common') }}">
+          <i class="fa fa-line-chart"></i> {{ 'Thống kê nhuận bút chung'|t }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('cttdt_rates.tk_rate_chat_luong') }}">
+          <i class="fa fa-line-chart"></i> {{ 'Thống kê chất lượng phục vụ'|t }}
+        </a>
+      </li>
+    {% endif %}
+
+    {% if is_btv == 0 and is_vpub == 0 %}
+      <li>
+        <a href="{{ path('view.list_post_by_user_and_category.page_tin_crawler') }}">
+          <i class="fa fa-cloud"></i> {{ 'Tin crawler'|t }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('view.danh_sach_lay_y_kien_du_thao_van_ban.page_2') }}"><i class="fa fa-files-o"></i> {{ 'Danh sách dự thảo văn bản'|t }}</a>
+      </li>
+      <li>
+        <a href="{{ path('view.danh_sach_y_kien_dong_gop_du_thao_van_ban.page_1') }}"><i class="fa fa-files-o"></i> {{ 'Danh sách ý kiến đóng góp'|t }}</a>
+      </li>
+    {% endif %}
+    {% if is_vpub %}
+      <li class="sub-menu">
+        <i class="fa fa-question-circle-o"></i> {{ 'Hỏi đáp doanh nghiệp'|t }}
+        <ul>
+          <li>
+            <a href="{{ path('view.danh_sach_cau_hoi_dap.page_ds_hoi_dap_dn') }}">
+              {{ 'Danh sách câu hỏi hỏi đáp'|t }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('view.danh_sach_cau_hoi_dap.page_chua_tra_loi_dn') }}">
+              {{ 'Câu hỏi chưa trả lời'|t }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('view.danh_sach_cau_hoi_dap.page_chua_phan_cong_dn') }}">
+              {{ 'Câu hỏi chưa phân công'|t }}
+            </a>
+          </li>
+        </ul>
+      </li>
+    {% endif %}
+    <li>
+      <a href="{{ path('entity.user.canonical', {'user': user.id}) }}"><i class="fa fa-user"></i> {{ 'Thông tin cá nhân'|t }}</a>
+    </li>
+  {% endif %}
+</ul>

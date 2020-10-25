@@ -1,0 +1,29 @@
+.webform-submission-hop-thu-gop-y-form {
+  .form-item {
+    display: flex;
+    &.form-type-managed-file {
+      display: block;
+    }
+    label {
+      float: left;
+      width: 100px;
+    }
+    input[type="text"], input[type="email"], input[type="tel"], textarea {
+      float: left;
+    }
+  }
+}
+
+.tk-form-filter form {
+  .form-actions {
+    margin-top: 10px;
+    button {
+      padding: 6px 10px;
+    }
+  }
+
+  .form-type-select, .form-actions {
+    float: left;
+    margin-right: rem(10px);
+  }
+}

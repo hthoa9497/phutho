@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * Theme override to display a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: HTML attributes for the region <div>.
+ * - region: The name of the region variable as defined in the theme's
+ *   .info.yml file.
+ *
+ * @see template_preprocess_region()
+ */
+#}
+{%
+  set classes = [
+  'region region__outline',
+  'region-' ~ region|clean_class,
+]
+%}
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    <!-- Nav pills -->
+    <ul class="nav nav-pills nav-cttdt-tab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="pill" href="#tin-trong-tinh">{{ 'Tin trong tỉnh'|t }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#tin-trong-nuoc">{{ 'Tin trong nước'|t }}</a>
+      </li>
+    </ul>
+
+    {#<!-- Tab panes -->#}
+    <div class="tab-content tab-content__cttdt">
+      <div id="tin-trong-tinh" class="container tab-pane active"><br>
+        {{ drupal_entity('block', 'views_block__tin_tuc_su_kien_box_block_tin_trong_tinh') }}
+      </div>
+      <div id="tin-trong-nuoc" class="container tab-pane fade"><br>
+        {{ drupal_entity('block', 'views_block__tin_tuc_su_kien_box_block_tin_trong_nuoc') }}
+      </div>
+    </div>
+  </div>
+  <div class="region__outline d-vbdt d-none d-md-block">
+    {{ drupal_entity('block', 'box_van_ban_dien_tu') }}
+  </div>
+{% endif %}

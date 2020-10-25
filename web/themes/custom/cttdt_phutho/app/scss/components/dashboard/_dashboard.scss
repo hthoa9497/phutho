@@ -1,0 +1,426 @@
+.container-dashboard{
+  background-color: $c-dashboard-bg;
+}
+.main-header {
+  background-color: $c-header-db;
+  -webkit-transition: margin-left .3s ease-in-out;
+  -o-transition: margin-left .3s ease-in-out;
+  transition: margin-left .3s ease-in-out;
+  margin-bottom: 0;
+  border: none;
+  min-height: rem(50px);
+  border-radius: 0;
+
+  .logo-dashboard {
+    background-color: $c-header-dark;
+    .logo {
+      display: inline-block;
+      margin: rem(5px) 0;
+      img {
+        height: rem(45px);
+      }
+    }
+  }
+
+  .user-logged-info {
+    padding: rem(15px) rem(25px);
+    color: $c-white;
+    font-weight: 500;
+    position: relative;
+    img {
+      float: left;
+      width: rem(25px);
+      height: rem(25px);
+      border-radius: 50%;
+      margin-right: rem(10px);
+      margin-top: rem(-2px);
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: $c-header-dark;
+    }
+    .profile-control {
+      display: none;
+      position: absolute;
+      width: rem(150px);
+      top: rem(56px);
+      right: 0;
+      background-color: $c-header-db;
+      z-index: 100;
+      li {
+        display: block;
+        a {
+          display: flex;
+          padding: rem(8px) rem(15px);
+          color: $c-white;
+        }
+        &:hover {
+          a {
+            background-color: $c-header-dark;
+          }
+        }
+      }
+      &.open {
+        display: block;
+      }
+    }
+  }
+}
+
+.sidebar-dashboard {
+  background-color: $c-sidebar-db;
+  color: $c-white;
+  min-height: calc(100vh - 55px);
+  padding-top: rem(15px);
+
+  .sidebar-menu {
+    li {
+      a {
+        display: flex;
+        color: $c-white;
+        padding: rem(12px) rem(5px) rem(12px) rem(15px);
+        border-left: rem(3px) solid transparent;
+        color: $c-menu-db;
+        font-weight: 500;
+        text-align: left;
+        i {
+          margin-right: rem(10px);
+          width: rem(15px);
+        }
+      }
+      &:hover, &.active {
+        a {
+          background-color: $c-menu-hover-db;
+          color: $c-white;
+        }
+      }
+
+      &.active {
+        a {
+          border-left-color: $c-menu-border-left;
+        }
+      }
+      &.sub-menu {
+        padding: 15px 15px 20px;
+        cursor: pointer;
+        position: relative;
+        color: $c-menu-db;
+        &.active, &:hover {
+          color: $c-white;
+          background-color: $c-menu-hover-db;
+        }
+        &:after {
+          font-family: FontAwesome;
+          content: "\f107";
+          position: absolute;
+          right: 8px;
+          top: 15px;
+        }
+        i {
+          margin-right: 8px;
+        }
+        ul {
+          display: none;
+          margin-left: 6px;
+          margin-top: 10px;
+          li a{
+            padding: 5px 15px;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+
+  .user-panel {
+    display: flex;
+    position: relative;
+    padding: rem(10px);
+    img {
+      width: rem(45px);
+      height: rem(45px);
+      border-radius: 50%;
+    }
+    .info {
+      padding: rem(5px) rem(5px) rem(5px) rem(15px);
+      line-height: 1;
+      position: absolute;
+      left: rem(55px);
+      .name {
+        font-weight: 500;
+      }
+      a {
+        display: block;
+        color: $c-white;
+        text-decoration: none;
+        font-size: rem(11px);
+        margin-top: rem(10px);
+      }
+    }
+  }
+}
+
+.main-footer {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: $c-white;
+  padding: rem(15px);
+  color: $c-footer-text-db;
+  border-top: 1px solid $c-footer-border-db;
+  -webkit-transition: -webkit-transform .3s ease-in-out,margin .3s ease-in-out;
+  -moz-transition: -moz-transform .3s ease-in-out,margin .3s ease-in-out;
+  -o-transition: -o-transform .3s ease-in-out,margin .3s ease-in-out;
+  transition: transform .3s ease-in-out,margin .3s ease-in-out;
+  z-index: 820;
+  font-weight: bold;
+}
+
+.main-content-dashboard {
+  position: relative;
+  .main-container-dashboard {
+    margin: rem(15px) rem(15px) rem(80px);
+    background-color: $c-white;
+    padding: rem(15px);
+    width: calc(100% - 45px);
+    #block-cttdt-phutho-help {
+      display: none;
+    }
+  }
+}
+
+.view-list-post-by-user-and-category {
+  .views-exposed-form {
+    .form-item {
+      label {
+        display: block;
+        line-height: rem(21px);
+      }
+    }
+    .form-actions {
+      display: inline-block;
+      margin: rem(34px) 0;
+    }
+  }
+}
+
+.main-container-dashboard {
+  td :not(.dropbutton-multiple) .dropbutton-widget {
+    position: static!important;
+  }
+}
+
+.node-article-form, .node-du-thao-van-ban-form {
+  .field--type-text-with-summary {
+    .field-edit-link {
+      display: none;
+    }
+    .text-summary-wrapper {
+      display: block !important;
+    }
+  }
+}
+
+.user-info {
+  padding: rem(15px) rem(15px) rem(30px);
+  .field--label-inline {
+    margin: rem(10px) 0;
+    display: inline-block;
+    width: 100%;
+  }
+  .field--name-user-picture {
+    img {
+      display: inline-block;
+    }
+  }
+  .field__label {
+    width: rem(120px);
+  }
+}
+
+.badge {
+  margin: 0 5px;
+  &--primary {
+    background-color: $c-header-db;
+    padding: 0 rem(8px);
+    line-height: rem(19px);
+    display: flex;
+    align-items: center;
+    border-radius: rem(5px);
+  }
+}
+
+#views-exposed-form-nhuan-but-page-nhuan-but-pv-btv {
+  label {
+    display: block;
+  }
+}
+
+.node-article-edit-form, .node-article-form, .node-hoi-dap-edit-form, .node-hoi-dap-form,
+.node-hoi-dap-doanh-nghiep-edit-form, .node-hoi-dap-doanh-nghiep-form{
+  .form-actions {
+    display: inline-block;
+  }
+  .layout-region-node-footer {
+    position: relative;
+    .entity-content-form-footer {
+      position: absolute;
+      top: rem(27px);
+      border-left: 1px solid $c-black;
+      label {
+        display: none;
+      }
+    }
+  }
+}
+
+.landing-page-content {
+  .node-hoi-dap-form, .node-hoi-dap-doanh-nghiep-form {
+    .entity-content-form-footer {
+      left: 125px!important;
+      top: 30px !important;
+      button {
+        height: 35px;
+      }
+    }
+  }
+}
+
+.path-cho-bt2-do, .path-cho-bt2-moi,
+.path-cho-bt-moi, .path-cho-bt-do{
+  table tbody {
+    tr td:last-child a {
+      background: #f5f5f2;
+      font-weight: 500;
+      padding: 4px 1.5em;
+      color: #333;
+      border: 1px solid #a6a6a6;
+      text-shadow: 0 1px hsla(0, 0%, 100%, 0.6);
+    }
+  }
+}
+
+#entity-embed-dialog-form {
+  width: 650px;
+}
+
+#tk-nhuan-but-by-month, #tk-tac-pham-by-month {
+  .form-type-select, .form-actions {
+    float: left;
+  }
+}
+
+.btn-print-tk-ct {
+  padding: rem(10px) rem(20px);
+}
+
+.table-tk {
+  margin-top: rem(30px);
+}
+
+.webform-submission-y-kien-dong-gop-du-thao-van-ban-edit-form {
+  .webform-submission-information {
+    display: none;
+  }
+}
+
+.view-danh-sach-y-kien-dong-gop-du-thao-van-ban {
+  table {
+    .views-field-edit-webform-submission {
+      a {
+        @extend .btn-primary;
+        padding: 5px;
+        border-radius: 3px;
+      }
+    }
+    .views-field-delete-webform-submission {
+      a {
+        @extend .btn-danger;
+        padding: 5px;
+        border-radius: 3px;
+      }
+    }
+  }
+}
+
+#views-exposed-form-danh-sach-lay-y-kien-du-thao-van-ban-page-2,
+#views-exposed-form-danh-sach-y-kien-dong-gop-du-thao-van-ban-page-1,
+.view-danh-sach-cau-hoi-dap .views-exposed-form {
+  .form-type-select {
+    select {
+      padding-top: 6px;
+    }
+    label {
+      display: block;
+    }
+    float: left;
+  }
+  .form-actions {
+    clear: none;
+    float: left;
+    button {
+      margin-top: 20px;
+      height: 28px;
+    }
+  }
+
+  .form-type-textfield {
+    float: left;
+    input {
+      height: 28px;
+      margin-top: 0;
+    }
+  }
+
+  #webform-submission-field-filter {
+    float: left;
+  }
+}
+
+#views-exposed-form-danh-sach-cau-hoi-dap-page-ds-hoi-dap {
+  margin-bottom: 30px;
+}
+
+.view-danh-sach-cau-hoi-dap {
+  table {
+    th {
+      text-align: left;
+    }
+  }
+}
+
+.node-hoi-dap-edit-form, .node-hoi-dap-doanh-nghiep-edit-form {
+  .field--type-email, .field--type-telephone {
+    label {
+      display: block;
+    }
+  }
+}
+
+.bao-cao-dv-filter, .cham-tra-loi-filter {
+  .form-item {
+    display: inline-block;
+    width: 45%;
+    margin-right: 10px;
+    label {
+      width: 150px;
+    }
+    input, select {
+      width: calc(100% - 150px);
+    }
+  }
+  .form-actions {
+    display: block;
+    width: 100%;
+  }
+}
+
+.view-list-post-by-user-and-category {
+  table td {
+    img {
+      width: 104px;
+    }
+  }
+}

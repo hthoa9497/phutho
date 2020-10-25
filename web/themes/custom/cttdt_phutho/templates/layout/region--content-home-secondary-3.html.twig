@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Theme override to display a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: HTML attributes for the region <div>.
+ * - region: The name of the region variable as defined in the theme's
+ *   .info.yml file.
+ *
+ * @see template_preprocess_region()
+ */
+#}
+{%
+  set classes = [
+  'region region__outline',
+  'region-' ~ region|clean_class,
+]
+%}
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    <!-- Nav pills -->
+    <ul class="nav nav-pills nav-cttdt-tab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="pill" href="#kinh-te">{{ 'Kinh tế'|t }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#vh-xh">{{ 'Văn Hoá - Xã Hội'|t }}</a>
+      </li>
+    </ul>
+
+    {#<!-- Tab panes -->#}
+    <div class="tab-content tab-content__cttdt">
+      <div id="kinh-te" class="container tab-pane active"><br>
+        {{ drupal_entity('block', 'views_block__tin_tuc_su_kien_box_block_kinh_te') }}
+      </div>
+      <div id="vh-xh" class="container tab-pane fade"><br>
+        {{ drupal_entity('block', 'views_block__tin_tuc_su_kien_box_block_vh_xh') }}
+      </div>
+    </div>
+  </div>
+{% endif %}

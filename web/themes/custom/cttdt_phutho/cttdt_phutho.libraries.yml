@@ -1,0 +1,30 @@
+cttdt_phutho:
+   version: 1.0
+   css:
+    theme:
+      node_modules/nivo-slider/nivo-slider.css: {}
+      node_modules/font-awesome/css/font-awesome.min.css: {}
+      css/style.css: {}
+      css/sidebar-style.css: {}
+      css/custom-block-style.css: {}
+   js:
+     js/bootstrap.js: {}
+     js/bootstrap.bundle.js: {}
+     js/charts.bundle.min.js: {}
+     node_modules/jQuery.print/jQuery.print.js: {}
+     node_modules/slick-carousel/slick/slick.js: {}
+     node_modules/nivo-slider/jquery.nivo.slider.js: {}
+     js/components/HeroBanner.js: {}
+     js/components/Header.js: {}
+     js/components/Dashboard.js: {}
+   dependencies:
+     - core/drupal
+     - core/jquery
+     - core/jquery.once
+
+question_survey:
+  js:
+    js/components/QuestionSurvey.js: {}
+rate_coquan:
+  js:
+    js/components/RateCoQuan.js: {}

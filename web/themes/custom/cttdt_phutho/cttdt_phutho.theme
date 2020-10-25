@@ -1,0 +1,651 @@
+<?php
+
+use Drupal\block\Entity\Block;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\media\Entity\Media;
+use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+/**
+ * @file
+ * Functions to support theming in the cttdt_phutho theme.
+ */
+
+function cttdt_phutho_preprocess_html (array &$variables) {
+  $current_user = \Drupal::currentUser();
+  $roles = $current_user->getRoles();
+
+  $role_name = '';
+  if (in_array('ctv', $roles)) {
+    $role_name = 'ctv';
+  }
+
+  if (in_array('btv', $roles)) {
+    $role_name = 'btv';
+  }
+
+  if (in_array('qtv', $roles)) {
+    $role_name = 'qtv';
+  }
+
+  if (in_array('lanh_dao_phong_cong_ttdt', $roles)) {
+    $role_name = 'lanh_dao_phong_cong_ttdt';
+  }
+
+  if (in_array('pgd_tt_phu_trach_cong_ttdt', $roles)) {
+    $role_name = 'pgd_tt_phu_trach_cong_ttdt';
+  }
+
+  if (in_array('truong_bbt', $roles)) {
+    $role_name = 'truong_bbt';
+  }
+
+  $variables['attributes']['class'][] = 'page-' . $role_name;
+}
+
+function cttdt_phutho_preprocess_page(&$variables) {
+  if (\Drupal::currentUser()->isAnonymous()) {
+    $variables['is_login'] = false;
+  }else {
+    $variables['is_login'] = true;
+  }
+
+  $current_user = \Drupal::currentUser();
+  $roles = $current_user->getRoles();
+
+  $user = User::load($current_user->id());
+  $variables['username'] = $user->getUsername();
+
+  if (!$user->user_picture->isEmpty()) {
+    /** @var \Drupal\file\Entity\File $img */
+    $img = $user->get('user_picture')->entity;
+    $fileUri = $img->getFileUri();
+    $variables['user_picture'] = ImageStyle::load('thumbnail')->buildUrl($fileUri);
+  }
+
+  if (in_array('ctv', $roles)) {
+    $variables['is_ctv'] = true;
+  }else {
+    $variables['is_ctv'] = false;
+  }
+
+  if (in_array('btv', $roles)) {
+    $variables['is_btv'] = true;
+  }else {
+    $variables['is_btv'] = false;
+  }
+
+  if (in_array('qtv', $roles)) {
+    $variables['is_qtv'] = true;
+  }else {
+    $variables['is_qtv'] = false;
+  }
+
+  if (in_array('lanh_dao_phong_cong_ttdt', $roles)) {
+    $variables['is_lanh_dao_phong_cong_ttdt'] = true;
+  }else {
+    $variables['is_lanh_dao_phong_cong_ttdt'] = false;
+  }
+
+  if (in_array('pgd_tt_phu_trach_cong_ttdt', $roles)) {
+    $variables['is_pgd_tt_phu_trach_cong_ttdt'] = true;
+  }else {
+    $variables['is_pgd_tt_phu_trach_cong_ttdt'] = false;
+  }
+
+  if (in_array('truong_bbt', $roles)) {
+    $variables['is_truong_bbt'] = true;
+  }else {
+    $variables['is_truong_bbt'] = false;
+  }
+
+  if (in_array('vpub', $roles)) {
+    $variables['is_vpub'] = true;
+  }else {
+    $variables['is_vpub'] = false;
+  }
+
+  $variables['total']['tra_lai'] = nodeCountState('tra_lai', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+  $variables['total']['tra_lai_bt1'] = nodeCountState('tra_lai_bt_1', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+  $variables['total']['tra_lai_bt2'] = nodeCountState('tra_lai_bt_2', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+  $variables['total']['cho_bien_tap_1'] = nodeCountState('tin_cho_bien_tap_1', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+  $variables['total']['cho_bien_tap_2'] = nodeCountState('tin_cho_bien_tap_2', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+  $variables['total']['tin_cho_duyet'] = nodeCountState('tin_cho_duyet', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+  $variables['total']['tin_da_duyet'] = nodeCountState('tin_da_duyet', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+  $variables['total']['xuat_ban'] = nodeCountState('published', 'quy_trinh_san_xuat_tin_bai_cua_cong_ttdt');
+
+  $bt_tin_moi = \Drupal::service('cttdt_dashboard.dashboard')->getTinChoBienTapNew('tin_cho_bien_tap_1');
+  $bt_tin_do = \Drupal::service('cttdt_dashboard.dashboard')->getTinChoBienTapDo('tin_cho_bien_tap_1');
+
+  $variables['total']['bt_tin_moi'] = count($bt_tin_moi);
+  $variables['total']['bt_tin_do'] = count($bt_tin_do);
+
+  $bt2_tin_moi = \Drupal::service('cttdt_dashboard.dashboard')->getTinChoBienTapNew('tin_cho_bien_tap_2');
+  $bt2_tin_do = \Drupal::service('cttdt_dashboard.dashboard')->getTinChoBienTapDo('tin_cho_bien_tap_2');
+
+  $variables['total']['bt2_tin_moi'] = count($bt2_tin_moi);
+  $variables['total']['bt2_tin_do'] = count($bt2_tin_do);
+
+  $variables['#cache']['max-age'] = 0;
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    if ($content_type == 'page') {
+      $variables['not_left_menu'] = $node->field_no_left_menu->value;
+    }
+  }
+  $date = new DateTime("now", new DateTimeZone('Asia/Ho_Chi_Minh') );
+//  $variables['current_date'] = rebuild_date('l, d/m/Y H:i', $date->getTimestamp());
+//  $variables['current_date_mobile'] = rebuild_date('l, d/m/Y', $date->getTimestamp());
+
+  $variables['current_date'] = $date->format('l, d/m/Y H:i');
+  $variables['current_date_mobile'] = $date->format('l, d/m/Y');
+
+  $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+  $node_id = \Drupal::routeMatch()->getRawParameter('node');
+  if ($node_id) {
+    $menu_link = $menu_link_manager->loadLinksByRoute('entity.node.canonical', array('node' => $node_id));
+  }
+  else {
+    $menu_link = NULL;
+  }
+
+  if (is_array($menu_link) && count($menu_link)) {
+    $menu_link = reset($menu_link);
+    if ($menu_link->getParent()) {
+      $parents = $menu_link_manager->getParentIds($menu_link->getParent());
+      $parents = array_reverse($parents);
+      $parent = reset($parents);
+      $title = $menu_link_manager->createInstance($parent)->getTitle();
+
+      $variables['parent_menu_title'] = $title;
+    }
+    else {
+      $title = $menu_link->getTitle();
+      $variables['parent_menu_title'] = $title;
+    }
+  }
+
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if (\Drupal::service('path.matcher')->isFrontPage()) {
+    $variables['#attached']['library'][] = 'cttdt_phutho/question_survey';
+  }
+
+  if ($route_name == 'cttdt_rates.rate_co_quan') {
+    $variables['#attached']['library'][] = 'cttdt_phutho/rate_coquan';
+  }
+
+  $block = Block::load('banner_lay_y_kien_doanh_nghiep');
+  if (!empty($block)) {
+    $variables['banner_dn'] = \Drupal::entityTypeManager()
+        ->getViewBuilder('block')
+        ->view($block);
+  }
+
+  $variables['sidebar_block'] = !empty(getSidebarRight()) ? getSidebarRight() : NULL;
+}
+
+function getSidebarRight() {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $sidebar_block = '';
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    if ($node->bundle() == 'article' && !empty($node->field_danh_muc)) {
+      $term_id = $node->field_danh_muc->target_id;
+      if (!empty($term_id)) {
+        $ancestors = \Drupal::service('entity_type.manager')->getStorage("taxonomy_term")->loadAllParents($term_id);
+        $ancestors = end($ancestors);
+        if (!empty($ancestors)) {
+          $danh_muc = Term::load($ancestors->id());
+          if (!empty($danh_muc)) {
+            $sidebar_block = $danh_muc->get('field_block_sidebar_right');
+          }
+        }
+      }
+    }
+  }
+  return $sidebar_block;
+}
+
+function rebuild_date( $format, $time = 0 )
+{
+  if ( ! $time ) $time = time();
+
+  $lang = array();
+  $lang['sun'] = 'CN';
+  $lang['mon'] = 'T2';
+  $lang['tue'] = 'T3';
+  $lang['wed'] = 'T4';
+  $lang['thu'] = 'T5';
+  $lang['fri'] = 'T6';
+  $lang['sat'] = 'T7';
+  $lang['sunday'] = 'Chủ nhật';
+  $lang['monday'] = 'Thứ hai';
+  $lang['tuesday'] = 'Thứ ba';
+  $lang['wednesday'] = 'Thứ tư';
+  $lang['thursday'] = 'Thứ năm';
+  $lang['friday'] = 'Thứ sáu';
+  $lang['saturday'] = 'Thứ bảy';
+  $lang['january'] = 'Tháng Một';
+  $lang['february'] = 'Tháng Hai';
+  $lang['march'] = 'Tháng Ba';
+  $lang['april'] = 'Tháng Tư';
+  $lang['may'] = 'Tháng Năm';
+  $lang['june'] = 'Tháng Sáu';
+  $lang['july'] = 'Tháng Bảy';
+  $lang['august'] = 'Tháng Tám';
+  $lang['september'] = 'Tháng Chín';
+  $lang['october'] = 'Tháng Mười';
+  $lang['november'] = 'Tháng M. một';
+  $lang['december'] = 'Tháng M. hai';
+  $lang['jan'] = 'T01';
+  $lang['feb'] = 'T02';
+  $lang['mar'] = 'T03';
+  $lang['apr'] = 'T04';
+  $lang['may2'] = 'T05';
+  $lang['jun'] = 'T06';
+  $lang['jul'] = 'T07';
+  $lang['aug'] = 'T08';
+  $lang['sep'] = 'T09';
+  $lang['oct'] = 'T10';
+  $lang['nov'] = 'T11';
+  $lang['dec'] = 'T12';
+
+  $format = str_replace( "r", "D, d M Y H:i:s O", $format );
+  $format = str_replace( array( "D", "M" ), array( "[D]", "[M]" ), $format );
+  $return = date( $format, $time );
+
+  $replaces = array(
+    '/\[Sun\](\W|$)/' => $lang['sun'] . "$1",
+    '/\[Mon\](\W|$)/' => $lang['mon'] . "$1",
+    '/\[Tue\](\W|$)/' => $lang['tue'] . "$1",
+    '/\[Wed\](\W|$)/' => $lang['wed'] . "$1",
+    '/\[Thu\](\W|$)/' => $lang['thu'] . "$1",
+    '/\[Fri\](\W|$)/' => $lang['fri'] . "$1",
+    '/\[Sat\](\W|$)/' => $lang['sat'] . "$1",
+    '/\[Jan\](\W|$)/' => $lang['jan'] . "$1",
+    '/\[Feb\](\W|$)/' => $lang['feb'] . "$1",
+    '/\[Mar\](\W|$)/' => $lang['mar'] . "$1",
+    '/\[Apr\](\W|$)/' => $lang['apr'] . "$1",
+    '/\[May\](\W|$)/' => $lang['may2'] . "$1",
+    '/\[Jun\](\W|$)/' => $lang['jun'] . "$1",
+    '/\[Jul\](\W|$)/' => $lang['jul'] . "$1",
+    '/\[Aug\](\W|$)/' => $lang['aug'] . "$1",
+    '/\[Sep\](\W|$)/' => $lang['sep'] . "$1",
+    '/\[Oct\](\W|$)/' => $lang['oct'] . "$1",
+    '/\[Nov\](\W|$)/' => $lang['nov'] . "$1",
+    '/\[Dec\](\W|$)/' => $lang['dec'] . "$1",
+    '/Sunday(\W|$)/' => $lang['sunday'] . "$1",
+    '/Monday(\W|$)/' => $lang['monday'] . "$1",
+    '/Tuesday(\W|$)/' => $lang['tuesday'] . "$1",
+    '/Wednesday(\W|$)/' => $lang['wednesday'] . "$1",
+    '/Thursday(\W|$)/' => $lang['thursday'] . "$1",
+    '/Friday(\W|$)/' => $lang['friday'] . "$1",
+    '/Saturday(\W|$)/' => $lang['saturday'] . "$1",
+    '/January(\W|$)/' => $lang['january'] . "$1",
+    '/February(\W|$)/' => $lang['february'] . "$1",
+    '/March(\W|$)/' => $lang['march'] . "$1",
+    '/April(\W|$)/' => $lang['april'] . "$1",
+    '/May(\W|$)/' => $lang['may'] . "$1",
+    '/June(\W|$)/' => $lang['june'] . "$1",
+    '/July(\W|$)/' => $lang['july'] . "$1",
+    '/August(\W|$)/' => $lang['august'] . "$1",
+    '/September(\W|$)/' => $lang['september'] . "$1",
+    '/October(\W|$)/' => $lang['october'] . "$1",
+    '/November(\W|$)/' => $lang['november'] . "$1",
+    '/December(\W|$)/' => $lang['december'] . "$1" );
+
+  return preg_replace( array_keys( $replaces ), array_values( $replaces ), $return );
+}
+
+function cttdt_phutho_preprocess_node(&$variables) {
+  if(\Drupal::service('path.matcher')->isFrontPage()) {
+    $variables['is_front'] = true;
+  }
+  else {
+    $variables['is_front'] = false;
+  }
+
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    if ($content_type == 'page') {
+      $variables['not_left_menu'] = $node->field_no_left_menu->value;
+    }
+  }
+}
+
+function cttdt_phutho_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+
+    // if ($content_type == 'page') {
+    //   if ($node->id() != "30081"){
+    //     $suggestions[] = 'page__landing_page';
+    //   }
+    // }
+    if ($content_type == 'hoi_dap' || $content_type == 'hoi_dap_doanh_nghiep') {
+      $suggestions[] = 'page__'.$content_type;
+    }
+    if ($content_type == 'bo_thu_tuc_hanh_chinh') {
+      $suggestions[] = 'page__'.$content_type;
+    }
+    if ($content_type == 'video' || $content_type == 'thu_vien_anh') {
+      $suggestions[] = 'page__thu_vien_anh_video';
+    }
+    if ($content_type == 'du_thao_van_ban' && $route_name != 'entity.node.edit_form') {
+      $suggestions[] = 'page__'.$content_type;
+    }
+    elseif ($content_type != 'article' && $content_type != 'page' && $content_type != 'hoi_dap'
+      && $content_type != 'bo_thu_tuc_hanh_chinh' && $content_type != 'video' && $content_type != 'thu_vien_anh'
+      && $content_type != 'du_thao_van_ban' && $content_type != 'hoi_dap_doanh_nghiep') {
+      $suggestions[] = 'page__dashboard_page';
+    }
+
+    if ($content_type == 'hoi_dap' && $route_name == 'entity.node.edit_form') {
+      $suggestions[] = 'page__dashboard_page';
+    }
+
+    if ($content_type == 'hoi_dap_doanh_nghiep' && $route_name == 'entity.node.edit_form') {
+      $suggestions[] = 'page__dashboard_page';
+    }
+  }
+  else {
+    $pages_not_use_dashboard_template = [
+      'user.login',
+      'user.pass',
+      'entity.node.preview',
+      'entity.taxonomy_term.canonical',
+      'entity.contact_form.canonical',
+      'entity_browser.assets_browser',
+      'entity.webform.canonical',
+      'cttdt_rates.rate_co_quan',
+      'view.danh_sach_lay_y_kien_du_thao_van_ban.page_1', 'entity.webform.confirmation',
+      'view.danh_sach_cau_hoi_dap.page_1',
+      'view.danh_ba_doanh_nghiep.page_1',
+      'view.danh_sach_cau_hoi_dap.page_2',
+      'search.view_node_search',
+      'view.investment_promotion.page_1',
+      'view.information_diplomacy.page_1',
+      // list view
+      'view.list_content_link_detail.page_1',
+      'view.list_content_link_detail.page_2',
+      'view.list_content_link_detail.page_3',
+      'view.list_content_link_detail.page_4',
+      'view.list_content_link_detail.page_5',
+      'view.list_content_link_detail.page_6',
+    ];
+
+    $node_type_not_use_dashboard_template = [
+      'hoi_dap',
+      'hoi_dap_doanh_nghiep',
+    ];
+    $node_type = \Drupal::routeMatch()->getParameter('node_type');
+    $node_get_type = !empty($node_type) ? $node_type->get('type') : '';
+    if (!in_array($route_name, $pages_not_use_dashboard_template) && !in_array($node_get_type, $node_type_not_use_dashboard_template)) {
+      $suggestions[] = 'page__dashboard_page';
+    }
+  }
+
+  if ($route_name == 'entity.taxonomy_term.canonical') {
+    $term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+    $term = Term::load($term_id);
+    $suggestions[] = 'page__' . $term->bundle();
+  }
+}
+
+function cttdt_phutho_theme_suggestions_block_alter(array &$suggestions, array $variables) {
+//  print_r('block'); exit;
+  if (!empty($variables['elements']['#id'])) {
+    if (strpos($variables['elements']['#id'], 'views_block__tin_tuc_su_kien_box_block') !== FALSE
+    && $variables['elements']['#id'] !== 'views_block__tin_tuc_su_kien_box_block_cdcs'
+    && $variables['elements']['#id'] !== 'views_block__tin_tuc_su_kien_box_block_thong_bao') {
+      $suggestions[] = 'block__views_block__tin_tuc_su_kien_box_block';
+    }
+  }
+
+  if ($variables['elements']['#base_plugin_id'] === 'block_content'
+    && isset($variables['elements']['content']['#block_content'])) {
+    $bundle = $variables['elements']['content']['#block_content']->bundle();
+    $suggestions[] = 'block__' . $bundle;
+  }
+
+  return $suggestions;
+}
+
+function cttdt_phutho_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  if ($hook == 'node_edit_form') {
+    if ($node = \Drupal::routeMatch()->getParameter('node')) {
+      $content_type = $node->bundle();
+    } else {
+      $current_path = \Drupal::service('path.current')->getPath();
+      $path_args = explode('/', $current_path);
+      $content_type = $path_args[3];
+    }
+    $suggestions[] = 'node_edit_form__' . $content_type;
+  }
+}
+
+function cttdt_phutho_preprocess_page__node__edit(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    if ($node->bundle() == 'article') {
+      $current_user = \Drupal::currentUser();
+      $roles = $current_user->getRoles();
+
+      $moderation_state = $node->get('moderation_state')->getValue();
+      $moderation_state = $moderation_state[0]['value'];
+      $is_crawler = $node->field_tin_crawl->value;
+
+      if (in_array('btv', $roles) || in_array('qtv', $roles) || in_array('ctv', $roles)) {
+        if ($moderation_state != 'draft' && $moderation_state != 'tra_lai' && $is_crawler != 1) {
+          throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+        }
+      }
+
+      if (in_array('lanh_dao_phong_cong_ttdt', $roles)) {
+        if ($moderation_state == 'draft' && $node->getOwnerId() != $current_user->id() && $moderation_state != 'tin_cho_bien_tap_1' && $is_crawler != 1) {
+          throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+        }
+      }
+
+      if (in_array('pgd_tt_phu_trach_cong_ttdt', $roles)) {
+        if ($moderation_state == 'draft' && $moderation_state == 'tin_cho_bien_tap_1' && $node->getOwnerId() != $current_user->id() && $moderation_state != 'tin_cho_bien_tap_2' && $is_crawler != 1) {
+          throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+        }
+      }
+
+      if (in_array('truong_bbt', $roles)) {
+        if ($moderation_state == 'draft' && $moderation_state != 'tin_cho_duyet' && $moderation_state != 'tin_da_duyet' && $moderation_state != 'published' && $is_crawler != 1) {
+          throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+        }
+      }
+    }
+  }
+}
+
+function cttdt_phutho_preprocess_views_view(&$variables) {
+  $variables['#cache']['max-age'] = 0;
+  $id_dv = \Drupal::request()->query->get('IDDV');
+  if (!empty($id_dv)) {
+    $variables['id_dv'] = $id_dv;
+  }
+}
+
+function cttdt_phutho_preprocess_views_view_unformatted__taxonomy_term__page_1(&$variables) {
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical') {
+    $term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+    $term = Term::load($term_id);
+
+    if ($term->bundle() == 'tin_tuc_su_kien') {
+      $ancestors = \Drupal::service('entity_type.manager')->getStorage("taxonomy_term")->loadAllParents($term_id);
+      $ancestors = end($ancestors);
+      if (!empty($ancestors->id())) {
+        $parent_taxo = Term::load($ancestors->id());
+        $variables['is_show_left_menu'] = !empty($parent_taxo->get('field_show_left_menu')) ? $parent_taxo->get('field_show_left_menu')->value : NULL;
+      }
+    }
+  }
+}
+
+function cttdt_phutho_preprocess_views_view__taxonomy_term__page_1(&$variables) {
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical') {
+    $term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+    $term = Term::load($term_id);
+
+    if ($term->bundle() == 'tin_tuc_su_kien') {
+      $variables['current_tid'] = $term_id;
+
+      $ancestors = \Drupal::service('entity_type.manager')->getStorage("taxonomy_term")->loadAllParents($term_id);
+      $ancestors = end($ancestors);
+
+      $vid = 'tin_tuc_su_kien';
+      if (!empty($ancestors->id())) {
+        $parent_taxo = Term::load($ancestors->id());
+        $variables['current_term_id'] = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+        $variables['parent_term_id'] = $ancestors->id();
+        $variables['is_show_left_menu'] = !empty($parent_taxo->get('field_show_left_menu')) ? $parent_taxo->get('field_show_left_menu')->value : NULL;
+        $variables['is_show_box'] = !empty($parent_taxo->get('field_hien_thi_theo_box')) ? $parent_taxo->get('field_hien_thi_theo_box')->value : NULL;
+        $banner_chuyen_muc = !empty($parent_taxo->get('field_banner_chuyen_muc')->entity->uri->value) ? $parent_taxo->get('field_banner_chuyen_muc')->entity->uri->value : NULL;
+        $variables['banner_chuyen_muc'] = $banner_chuyen_muc;
+        $variables['sidebar_block'] = $parent_taxo->get('field_block_sidebar_right');
+
+        $terms =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid, $ancestors->id(), NULL, FALSE);
+        foreach ($terms as $term) {
+          $aliasManager = \Drupal::service('path.alias_manager');
+          $alias = $aliasManager->getAliasByPath('/taxonomy/term/'.$term->tid);
+
+          $parent = \Drupal::service('entity_type.manager')->getStorage("taxonomy_term")->loadParents($term->tid);
+          $parent = reset($parent);
+
+          if ($parent->id() !== $ancestors->id()) {
+            $term_data[$parent->id()]['sub_menu'][$term->tid] = array(
+              "name" => $term->name,
+              "depth" => $term->depth,
+              "url_alias" => $alias
+            );
+          } else {
+            $term_second = Term::load($term->tid);
+            $is_tieu_de_menu = $term_second->get('field_tieu_de_nhom_menu')->value;
+            $term_data[$term->tid] = array(
+              "name" => $term->name,
+              "depth" => $term->depth,
+              "url_alias" => $alias,
+              "is_tieu_de" => $is_tieu_de_menu,
+              "link_external" => !empty($term_second->field_link_external[0]->uri) ? Url::fromUri($term_second->field_link_external[0]->uri)->toString() : NULL
+            );
+          }
+        }
+      }
+      $variables['menu_chuyen_trang'] = !empty($term_data) ? $term_data : '';
+    }
+  }
+}
+
+function cttdt_phutho_preprocess_views_view_table__list_post_by_user_and_category(&$variables) {
+  foreach($variables['rows'] as $key => $row) {
+    $node = Node::load($variables['result'][$key]->_entity->id());
+    $moderation_state = $node->get('moderation_state')->getValue();
+    $moderation_state = $moderation_state[0]['value'];
+
+    $node_id = $variables['result'][$key]->_entity->id();
+    $variables['views_count'][$key] = getCountNodeViews($node_id);
+
+    $current_user = \Drupal::currentUser();
+    $roles = $current_user->getRoles();
+
+  }
+}
+
+function cttdt_phutho_preprocess_views_view_table__nhuan_but(&$variables) {
+  $config = \Drupal::config('cttdt_dashboard.cttdtconfig');
+  $variables['luong_co_so'] = ($config->get('luong_co_so') > 0) ? $config->get('luong_co_so') : 0;
+}
+
+function nodeCountPublished() {
+  $query = \Drupal::entityQuery('node')
+    ->condition('status', 1)
+    ->condition('type', 'article');
+  $result = $query->count()->execute();
+  return $result;
+}
+
+function getCountNodeViews($node_id) {
+  $query = db_query("SELECT COUNT(nid) AS count_view FROM nodeviewcount WHERE nid = '".$node_id."'");
+  $num_rows = $query->fetchAll();
+  return !empty($num_rows) ? $num_rows[0]->count_view : 0;
+}
+
+function nodeCountState($status, $workflow) {
+
+  $current_user = \Drupal::currentUser();
+  $user = User::load($current_user->id());
+  $roles = $current_user->getRoles();
+
+  $phong_ban = [];
+  if (!empty($user->get('field_user_phong_ban'))) {
+    foreach ($user->get('field_user_phong_ban') as $val) {
+      $phong_ban[] = $val->target_id;
+    }
+  }
+  if (!empty($phong_ban)) {
+    $query_user = \Drupal::entityQuery('user')
+      ->condition('field_user_phong_ban', $phong_ban, 'IN')->execute();
+  }
+  else {
+    $query_user = \Drupal::entityQuery('user')->execute();
+  }
+
+  if (!empty($query_user)) {
+    $query = \Drupal::entityQuery('content_moderation_state')
+      ->condition('moderation_state', $status)
+      ->condition('workflow', $workflow)
+      ->condition('uid', $query_user, 'IN');
+  }
+  else {
+    if (in_array('truong_bbt', $roles)) {
+      $query = \Drupal::entityQuery('content_moderation_state')
+        ->condition('workflow', $workflow)
+        ->condition('moderation_state', $status);
+    }
+  }
+
+  $result = !empty($query) ? $query->count()->execute() : 0;
+  return $result;
+}
+
+function cttdt_phutho_theme_suggestions_node_alter(array &$suggestions, array $variables) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  $result = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+
+  $path_alias = trim($result, '/');
+  $path_alias = str_replace('/', '-', $path_alias);
+  $path_alias = str_replace('-', '_', $path_alias);
+  $suggestions[] = 'node__page__'.$path_alias;
+}
+
+function cttdt_phutho_preprocess_webform__y_kien_dong_gop_du_thao_van_ban(array &$variables) {
+  $vb_id = \Drupal::request()->query->get('vb_id');
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name != 'entity.webform_submission.edit_form') {
+    if (!empty($vb_id)) {
+      $vb = Node::load($vb_id);
+      if (!empty($vb)) {
+        $variables['form_title'] = $vb->getTitle();
+      }
+      else {
+        $path = \Drupal\Core\Url::fromRoute('view.danh_sach_lay_y_kien_du_thao_van_ban.page_1')->toString();
+        $response = new RedirectResponse($path);
+        $response->send();
+      }
+    }
+    else {
+      $path = \Drupal\Core\Url::fromRoute('view.danh_sach_lay_y_kien_du_thao_van_ban.page_1')->toString();
+      $response = new RedirectResponse($path);
+      $response->send();
+    }
+  }
+}

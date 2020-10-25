@@ -1,0 +1,190 @@
+{#
+/**
+ * @file
+ * Theme override for a main view template.
+ *
+ * Available variables:
+ * - attributes: Remaining HTML attributes for the element.
+ * - css_name: A css-safe version of the view name.
+ * - css_class: The user-specified classes names, if any.
+ * - header: The optional header.
+ * - footer: The optional footer.
+ * - rows: The results of the view query, if any.
+ * - empty: The content to display if there are no rows.
+ * - pager: The optional pager next/prev links to display.
+ * - exposed: Exposed widget form/info to display.
+ * - feed_icons: Optional feed icons to display.
+ * - more: An optional link to the next page of results.
+ * - title: Title of the view, only used when displaying in the admin preview.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the view title.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the view title.
+ * - attachment_before: An optional attachment view to be displayed before the
+ *   view content.
+ * - attachment_after: An optional attachment view to be displayed after the
+ *   view content.
+ * - dom_id: Unique id for every view being printed to give unique class for
+ *   Javascript.
+ *
+ * @see template_preprocess_views_view()
+ */
+#}
+{%
+  set classes = [
+  'view',
+  'view-post-by-category',
+  'view-' ~ id|clean_class,
+  'view-id-' ~ id,
+  'view-display-id-' ~ display_id,
+  dom_id ? 'js-view-dom-id-' ~ dom_id,
+]
+%}
+
+<div class="row">
+  {% if banner_chuyen_muc is not empty %}
+    <div class="col-12 banner__chuyen-muc mb-3">
+      <img src="{{ file_url(banner_chuyen_muc) }}" alt="">
+    </div>
+  {% endif %}
+  {% if is_show_left_menu == 1 %}
+    <div class="col-md-3">
+      {% if menu_chuyen_trang is not empty %}
+        <ul id="menu-chuyen-trang" class="nav flex-column menu-chuyen-trang">
+          {% for menu_item in menu_chuyen_trang  %}
+            <li class="nav-item">
+              {% if menu_item['is_tieu_de'] == 1 %}
+                <h3>{{ menu_item['name'] }}</h3>
+              {% else %}
+                {% if menu_item['link_external'] is not empty %}
+                  <a href="{{ menu_item['link_external'] }}" class="{{ menu_item['sub_menu']|length > 0 ? 'has-sub-menu':'' }}">{{ menu_item['name'] }}</a>
+                {% else %}
+                  <a href="{{ menu_item['url_alias'] }}" class="{{ menu_item['sub_menu']|length > 0 ? 'has-sub-menu':'' }}">{{ menu_item['name'] }}</a>
+                {% endif %}
+              {% endif %}
+
+              {% if (menu_item['sub_menu'] is not empty) and (menu_item['is_tieu_de'] != 1) %}
+                <ul class="sub_menu nav flex-column">
+                  {% for sub_item in menu_item['sub_menu'] %}
+                    <li class="nav-item">
+                      {% if sub_item['link_external'] is not empty %}
+                        <a href="{{ sub_item['link_external'] }}">{{ sub_item['name'] }}</a>
+                      {% else %}
+                        <a href="{{ sub_item['url_alias'] }}">{{ sub_item['name'] }}</a>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    {% set content_class = 'col-md-9' %}
+  {% else %}
+    {% set content_class = 'col-md-12' %}
+  {% endif %}
+
+  {% if is_show_box == 1 and current_term_id == parent_term_id %}
+    {% if sidebar_block is not empty %}
+      <div class="col-12 col-md-9">
+        <div class="row">
+          {% for key, item in menu_chuyen_trang %}
+            {% set count_row = 12 / menu_chuyen_trang|length %}
+            <div class="col-12 col-md-{{ count_row }} list-post-box mb-3">
+              <div class="region__outline p-0 list-post-box__{{ key }}">
+                {{ drupal_entity('taxonomy_term', key) }}
+                {{ drupal_view('list_post_show_box', 'block_1', key) }}
+                <div class="view-footer">
+                  <a href="{{ path('entity.taxonomy_term.canonical', {'taxonomy_term': key}) }}">{{ 'Xem thêm'|t }}</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-12 col-md-3 mt-2">
+        {{ sidebar_block|view }}
+      </div>
+    {% else %}
+      {% for key, item in menu_chuyen_trang %}
+        <div class="col-12 col-md-4 list-post-box mb-3">
+          <div class="region__outline p-0">
+            {{ drupal_entity('taxonomy_term', key) }}
+            {{ drupal_view('list_post_show_box', 'block_1', key) }}
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+  {% else %}
+    <div{{ attributes.addClass(classes, content_class) }}>
+      {{ title_prefix }}
+      {% if title %}
+        {{ title }}
+      {% endif %}
+      {{ title_suffix }}
+
+      {% if header %}
+        <div class="view-header">
+          {% set tid = header.entity_taxonomy_term['#taxonomy_term'].tid.0.value %}
+          {% if tid is not empty %}
+            {{ drupal_entity('taxonomy_term', tid) }}
+          {% endif %}
+        </div>
+      {% else %}
+        {% if current_tid is not empty %}
+          <div class="view-header">
+            {{ drupal_entity('taxonomy_term', current_tid) }}
+          </div>
+        {% endif %}
+      {% endif %}
+      {% if exposed %}
+        <div class="view-filters">
+          {{ exposed }}
+        </div>
+      {% endif %}
+      {% if attachment_before %}
+        <div class="attachment attachment-before">
+          {{ attachment_before }}
+        </div>
+      {% endif %}
+
+      {% if rows %}
+        <div class="view-content">
+          {{ rows }}
+        </div>
+      {% elseif empty %}
+        <div class="view-empty">
+          {{ empty }}
+        </div>
+      {% endif %}
+
+      {% if pager %}
+        {{ pager }}
+      {% endif %}
+      {% if attachment_after %}
+        <div class="attachment attachment-after">
+          {{ attachment_after }}
+        </div>
+      {% endif %}
+      {% if more %}
+        {{ more }}
+      {% endif %}
+      {% if footer %}
+        <div class="view-footer">
+          {{ footer }}
+        </div>
+      {% endif %}
+      {% if feed_icons %}
+        <div class="feed-icons">
+          {{ feed_icons }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+
+

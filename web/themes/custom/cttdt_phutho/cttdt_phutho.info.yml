@@ -1,0 +1,34 @@
+name: cttdt_phutho
+type: theme
+description: 'CTTĐT Phu Tho Theme'
+package: Other
+core: 8.x
+libraries:
+  - cttdt_phutho/cttdt_phutho
+
+base theme: adminimal_theme
+
+regions:
+  hero_banner: 'Hero banner'
+  navigation: 'Navigation'
+  navigation_mobile: 'Navigation Mobile'
+  header: 'Top Bar'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  content_top: 'Content Top'
+  content: 'Content'
+  content_home_first: 'Content Home First'
+  content_home_secondary_1: 'Content Home Secondary 1'
+  content_home_secondary_2: 'Content Home Secondary 2'
+  content_home_secondary_3: 'Content Home Secondary 3'
+  content_home_secondary_4: 'Content Home Secondary 4'
+  content_home_secondary_5: 'Content Home Secondary 5'
+  sidebar_home_right_first: 'Sidebar Home Right First'
+  sidebar_home_right_secondary: 'Sidebar Home Right Secondary'
+  sidebar_left_don_vi: 'Sidebar left Co quan, don vi'
+  sidebar_first: 'Primary'
+  sidebar_second: 'Secondary'
+  footer_top: 'Footer top'
+  footer: 'Footer'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'

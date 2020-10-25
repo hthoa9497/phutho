@@ -1,0 +1,24 @@
+// Default variables.
+@import "default-variables";
+
+@import "bootstrap/custom";
+
+// Slick carousel
+@import "../../node_modules/slick-carousel/slick/slick";
+@import "../../node_modules/slick-carousel/slick/slick-theme";
+
+// Variables.
+@import "variables/colors";
+
+// Typography
+@import "typography/fonts";
+@import "typography/typography";
+
+// Utils
+@import "utils/functions";
+
+// Layout
+@import "layout/layout";
+
+// Components
+@import "components/components";

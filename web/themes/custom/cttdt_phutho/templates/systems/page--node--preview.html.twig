@@ -1,0 +1,101 @@
+<div class="container-dashboard container-review">
+  <div class="container-fluid no-padding">
+    <div class="row">
+      <div class="col-12">
+        {% include '@cttdt_phutho/layout/header-dashboard.html.twig' %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 sidebar-dashboard">
+        {#Sidebar#}
+        <div class="user-panel">
+          <div class="pull-left image">
+            <a href="{{ path('entity.user.edit_form', {'user': user.id}) }}">
+              {% if user_picture is not empty %}
+                <img src="{{ user_picture }}" alt="">
+              {% else %}
+                <img src="{{ base_path ~ directory }}/images/user2-160x160.jpg" alt="">
+              {% endif %}
+            </a>
+          </div>
+          <div class="pull-left info">
+            <span class="name">{{ username }}</span>
+            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          </div>
+        </div>
+        {% include '@cttdt_phutho/layout/sidebar-dashboard.html.twig' %}
+      </div>
+      <div class="col-md-10 no-padding main-content-dashboard">
+        {# Main #}
+        {% block main %}
+          <div role="main" class="main-container-dashboard {{ container }} js-quickedit-main-content">
+            <div class="row">
+
+              {# Header #}
+              {% if page.header %}
+                {% block header %}
+                  <div class="col-sm-12" role="heading">
+                    {{ page.header }}
+                  </div>
+                {% endblock %}
+              {% endif %}
+
+              {# Sidebar First #}
+              {% if page.sidebar_first %}
+                {% block sidebar_first %}
+                  <aside class="col-sm-3" role="complementary">
+                    {{ page.sidebar_first }}
+                  </aside>
+                {% endblock %}
+              {% endif %}
+
+              {# Content #}
+              {%
+                set content_classes = [
+                page.sidebar_first and page.sidebar_second ? 'col-sm-6',
+                page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9',
+                page.sidebar_second and page.sidebar_first is empty ? 'col-sm-9',
+                page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
+              ]
+              %}
+              <section{{ content_attributes.addClass(content_classes) }}>
+
+                {# Highlighted #}
+                {% if page.highlighted %}
+                  {% block highlighted %}
+                    <div class="highlighted">{{ page.highlighted }}</div>
+                  {% endblock %}
+                {% endif %}
+
+                {# Help #}
+                {% if page.help %}
+                  {% block help %}
+                    {{ page.help }}
+                  {% endblock %}
+                {% endif %}
+
+                {# Content #}
+                {% block content %}
+                  <a id="main-content"></a>
+                  {{ page.content }}
+                {% endblock %}
+              </section>
+
+              {# Sidebar Second #}
+              {% if page.sidebar_second %}
+                {% block sidebar_second %}
+                  <aside class="col-sm-3" role="complementary">
+                    {{ page.sidebar_second }}
+                  </aside>
+                {% endblock %}
+              {% endif %}
+            </div>
+          </div>
+        {% endblock %}
+
+        {#Footer#}
+        {% include '@cttdt_phutho/layout/footer-dashboard.html.twig' %}
+      </div>
+    </div>
+  </div>
+</div>

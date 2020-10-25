@@ -1,0 +1,45 @@
+<footer id="footer" class="footer">
+  <div class="footer__top">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 offset-md-5 custom-space">
+          <ul>
+            <li><a href="{{ path('<front>') }}">{{ 'Home' }}</a></li>
+            <li><a href="/sitemap">{{ 'Gate Map'|t }}</a></li>
+            <li><a href="/articles/rss.xml">{{ 'RSS'|t }}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-group-bottom">
+    <div class="footer__menus">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7 offset-md-5 copyright custom-space">
+            <h4>Portal of Phu Tho province <br> Line agency: People's Committee of Phu Tho province</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <div class="bottom">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-7 offset-md-5 custom-space">
+                <p> License to set up website No. 61 / GP-TTĐT issued by the Department of Broadcasting and Electronic Information on March 23, 2018. </p>
+                <p> Responsible: Mr. Trinh Hung Son - Director of Phu Tho Department of Information and Communication </p>
+                <p> Nguyen Tat Thanh Street, Tan Dan Ward, Viet Tri City, Phu Tho Province </p>
+                <span> Phone: 0210.3812494 </span> -
+                <span> Fax: 0210.3811485 </span> -
+                <span> Email: banbientap@phutho.gov.vn </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ drupal_entity('block', 'visitors') }}
+  </div>
+</footer>

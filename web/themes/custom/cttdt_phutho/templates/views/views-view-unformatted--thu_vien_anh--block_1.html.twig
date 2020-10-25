@@ -1,0 +1,64 @@
+{#
+/**
+ * @file
+ * Theme override to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ */
+#}
+{% if title %}
+  <h3>{{ title }}</h3>
+{% endif %}
+
+<div class="views-row d-none d-md-block">
+  {% for row in rows %}
+    {%
+      set row_classes = [
+      default_row_class ? 'views-row',
+    ]
+    %}
+
+    {% if loop.index == 1 %}
+      <div class="video__highlight video__item">
+        <div class="slider-anh-library-highlight">
+          {% for item in row.content['#row']._entity.field_anh_lien_quan  %}
+            <div class="thu-vien-item">
+              <img src="{{ file_url(item.entity.field_media_image.entity.uri.value) }}" alt="{{ item.entity.field_media_image.alt }}">
+            </div>
+          {% endfor %}
+        </div>
+        <a class="video__item__title text-align-left" href="{{ path('entity.node.canonical', {'node': row.content['#row']._entity.nid.value}) }}">{{ row.content['#row']._entity.title.value }}</a>
+      </div>
+    {% else %}
+      <div class="video__item">
+        <a class="video__item__title text-align-left" href="{{ path('entity.node.canonical', {'node': row.content['#row']._entity.nid.value}) }}">{{ row.content['#row']._entity.title.value }}</a>
+      </div>
+    {% endif %}
+  {% endfor %}
+  <div class="view-footer text-align-right">
+    <a href="{{ path('entity.node.canonical', {'node': rows[0].content['#row']._entity.nid.value}) }}">Xem thêm</a>
+  </div>
+</div>
+<div class="views-row d-block d-md-none">
+  <div class="images-library-mobile mt-3 pl-3 pr-2">
+    {% for row in rows %}
+      <div class="video__item text-align-center">
+        <img src="{{ file_url(row.content['#row']._entity.field_anh_lien_quan.0.entity.field_media_image.entity.uri.value) }}" alt="{{ row.content['#row']._entity.field_anh_lien_quan.0.entity.field_media_image.alt }}">
+        <a class="video__item__title text-align-left" href="{{ path('entity.node.canonical', {'node': row.content['#row']._entity.nid.value}) }}">{{ row.content['#row']._entity.title.value }}</a>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="view-footer text-align-right">
+    <a href="{{ path('entity.node.canonical', {'node': rows[0].content['#row']._entity.nid.value}) }}">Xem thêm</a>
+  </div>
+</div>
+
