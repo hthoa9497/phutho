@@ -33,8 +33,9 @@ class ContentCleanerController extends ControllerBase {
     $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     $entities = $controller->loadMultiple($unused_tids);
     $controller->delete($entities);
-    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple();
-    print_r($terms);
-    exit;
+    print_r('Done!'); exit;
+//    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadMultiple();
+//    print_r($terms);
+//    exit;
   }
 }

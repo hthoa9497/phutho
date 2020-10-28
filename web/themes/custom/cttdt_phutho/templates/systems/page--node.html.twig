@@ -88,6 +88,15 @@
           </div>
         </div>
       </div>
+      {% if logged_in %}
+        <div class="col-12 d-none d-md-block my-2">
+          {% if is_truong_bbt %}
+            <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>
+          {% else %}
+            <a href="{{ path('view.list_post_by_user_and_category.page_tin_cua_toi') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>
+          {% endif %}
+        </div>
+      {% endif %}
       {# Header #}
       {% if page.header %}
         {% block header %}
@@ -119,15 +128,15 @@
       {% endif %}
       {% if (drupal_view_result('tin_tuc_lien_quan', 'block_1') is not empty) and (sidebar_block is empty) %}
         <div class="col-md-3 content-sidebar-left">
-          <div class="d-none d-md-block">
-            {% if logged_in %}
-              {% if is_truong_bbt %}
-                <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>
-              {% else %}
-                <a href="{{ path('view.list_post_by_user_and_category.page_tin_cua_toi') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>
-              {% endif %}
-            {% endif %}
-          </div>
+{#          <div class="d-none d-md-block">#}
+{#            {% if logged_in %}#}
+{#              {% if is_truong_bbt %}#}
+{#                <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>#}
+{#              {% else %}#}
+{#                <a href="{{ path('view.list_post_by_user_and_category.page_tin_cua_toi') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>#}
+{#              {% endif %}#}
+{#            {% endif %}#}
+{#          </div>#}
           <div class="article-content-left">
             <h2 class="head-danh-muc">{{ 'Các tin khác'|t }}</h2>
             {{ drupal_view('tin_tuc_lien_quan', 'block_1') }}
@@ -137,15 +146,6 @@
       {% if drupal_view_result('tin_tuc_lien_quan', 'block_1') is not empty %}
         {% set class_content = 'col-md-9 article-content' %}
       {% else %}
-        {% if logged_in %}
-          <div class="col-12 d-none d-md-block my-2">
-            {% if is_truong_bbt %}
-              <a href="{{ path('view.list_post_by_user_and_category.page_tin_cho_duyet') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>
-            {% else %}
-              <a href="{{ path('view.list_post_by_user_and_category.page_tin_cua_toi') }}" class="btn btn-outline-primary"><i class="fa fa-tachometer"></i> {{ 'Quay lại trang quản trị'|t }}</a>
-            {% endif %}
-          </div>
-        {% endif %}
         {%
           set class_content = [
           page.sidebar_first and page.sidebar_second ? 'col-sm-6',
